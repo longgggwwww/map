@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 Int          @id @default(autoincrement())
+  username           String       @unique
+  password           String
+  personal           Personal?
+  type               Int          @default(0)
+  isActive           Boolean      @default(false)
+  createdRoles       Role[]
+  createdPermissions Permission[]
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+  log                Log[]
+}
+
+model Personal {
+  id         Int       @id @default(autoincrement())
+  user       User      @relation(fields: [userId], references: [id])
+  userId     Int       @unique
+  email      String?   @unique
+  phone      String?   @unique
+  fullName   String?
+  birthday   DateTime?
+  gender     Boolean?
+  address    String?
+  image      String?
+  position   Position? @relation(fields: [positionId], references: [id])
+  positionId Int?
+  ward       Ward?     @relation(fields: [wardId], references: [id])
+  wardId     Int?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Role {
+  id          Int          @id @default(autoincrement())
+  name        String
+  permissions Permission[]
+  createdBy   User?        @relation(fields: [createdById], references: [id])
+  createdById Int?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model PermissionGroup {
+  id          Int          @id @default(autoincrement())
+  name        String
+  permissions Permission[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Permission {
+  id          Int             @id @default(autoincrement())
+  code        String          @unique
+  label       String
+  group       PermissionGroup @relation(fields: [groupId], references: [id])
+  groupId     Int
+  roles       Role[]
+  createdBy   User?           @relation(fields: [createdById], references: [id])
+  createdById Int?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+}
+
+model Company {
+  id          Int          @id @default(autoincrement())
+  name        String
+  email       String       @unique
+  phone       String       @unique
+  tax         String       @unique
+  departments Department[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Department {
+  id        Int        @id @default(autoincrement())
+  name      String
+  code      String     @unique
+  company   Company    @relation(fields: [companyId], references: [id])
+  companyId Int
+  positions Position[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Position {
+  id           Int        @id @default(autoincrement())
+  name         String
+  code         String     @unique
+  department   Department @relation(fields: [departmentId], references: [id])
+  departmentId Int
+  persons      Personal[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Province {
+  id        Int        @id @default(autoincrement())
+  name      String
+  code      String     @unique
+  districts District[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model District {
+  id         Int      @id @default(autoincrement())
+  name       String
+  code       String   @unique
+  province   Province @relation(fields: [provinceId], references: [id])
+  provinceId Int
+  wards      Ward[]
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Ward {
+  id         Int        @id @default(autoincrement())
+  name       String
+  code       String     @unique
+  district   District   @relation(fields: [districtId], references: [id])
+  districtId Int
+  persons    Personal[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model Log {
+  id      Int      @id @default(autoincrement())
+  user    User     @relation(fields: [userId], references: [id])
+  userId  Int
+  method  String
+  url     String
+  content String
+  time    DateTime @default(now())
+  ip      String?
+}
