@@ -47,6 +47,7 @@ model Personal {
 model Role {
   id          Int          @id @default(autoincrement())
   name        String
+  code        String       @unique
   permissions Permission[]
   users       User[]
   createdBy   User?        @relation(name: "createdBy", fields: [createdById], references: [id])
@@ -146,7 +147,7 @@ model Log {
   userId    Int
   method    String
   url       String
-  content   String
+  content   String?
   time      BigInt
   ip        String?
   createdAt DateTime @default(now())
