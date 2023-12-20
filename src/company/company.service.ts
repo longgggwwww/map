@@ -36,7 +36,7 @@ export class CompanyService {
   }
 
   async findUniq(where: Prisma.CompanyWhereUniqueInput) {
-    return this.prisma.company.findUnique({
+    return this.prisma.company.findUniqueOrThrow({
       where,
       include: {
         departments: true,

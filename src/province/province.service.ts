@@ -36,7 +36,7 @@ export class ProvinceService {
   }
 
   async findUniq(where: Prisma.ProvinceWhereUniqueInput) {
-    return this.prisma.province.findUnique({
+    return this.prisma.province.findUniqueOrThrow({
       where,
       include: {
         districts: true,

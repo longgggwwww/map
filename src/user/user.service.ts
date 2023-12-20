@@ -10,6 +10,14 @@ export class UserService {
     return this.prisma.user.create({
       data,
       include: {
+        roles: {
+          include: {
+            permissions: true,
+          },
+        },
+        myPlaces: true,
+        createdCategories: true,
+        reviews: true,
         personal: true,
         createdRoles: true,
         createdPermissions: true,
@@ -33,6 +41,14 @@ export class UserService {
       where,
       orderBy,
       include: {
+        roles: {
+          include: {
+            permissions: true,
+          },
+        },
+        myPlaces: true,
+        createdCategories: true,
+        reviews: true,
         personal: true,
         createdRoles: true,
         createdPermissions: true,
@@ -42,23 +58,17 @@ export class UserService {
   }
 
   async findUniq(where: Prisma.UserWhereUniqueInput) {
-    // const users = [
-    //   {
-    //     userId: 1,
-    //     username: 'john',
-    //     password: 'changeme',
-    //   },
-    //   {
-    //     userId: 2,
-    //     username: 'maria',
-    //     password: 'guess',
-    //   },
-    // ];
-    // return users.find((user) => user.username === where.username);
-
-    return this.prisma.user.findUnique({
+    return this.prisma.user.findUniqueOrThrow({
       where,
       include: {
+        roles: {
+          include: {
+            permissions: true,
+          },
+        },
+        myPlaces: true,
+        createdCategories: true,
+        reviews: true,
         personal: true,
         createdRoles: true,
         createdPermissions: true,
@@ -76,6 +86,14 @@ export class UserService {
       data,
       where,
       include: {
+        roles: {
+          include: {
+            permissions: true,
+          },
+        },
+        myPlaces: true,
+        createdCategories: true,
+        reviews: true,
         personal: true,
         createdRoles: true,
         createdPermissions: true,
@@ -94,11 +112,34 @@ export class UserService {
     return this.prisma.user.delete({
       where,
       include: {
+        roles: {
+          include: {
+            permissions: true,
+          },
+        },
+        myPlaces: true,
+        createdCategories: true,
+        reviews: true,
         personal: true,
         createdRoles: true,
         createdPermissions: true,
         log: true,
       },
+    });
+  }
+
+  async updateUserStatus(params: {
+    where: Prisma.UserWhereInput;
+    data: {
+      status: boolean;
+    };
+  }) {
+    const { where, data } = params;
+    return this.prisma.user.updateMany({
+      data: {
+        isActive: data.status,
+      },
+      where,
     });
   }
 }

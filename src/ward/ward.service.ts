@@ -38,7 +38,7 @@ export class WardService {
   }
 
   async findUniq(where: Prisma.WardWhereUniqueInput) {
-    return this.prisma.ward.findUnique({
+    return this.prisma.ward.findUniqueOrThrow({
       where,
       include: {
         district: true,

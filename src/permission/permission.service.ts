@@ -10,6 +10,7 @@ export class PermissionService {
     return this.prisma.permission.create({
       data,
       include: {
+        group: true,
         roles: true,
         createdBy: true,
       },
@@ -31,6 +32,7 @@ export class PermissionService {
       where,
       orderBy,
       include: {
+        group: true,
         roles: true,
         createdBy: true,
       },
@@ -38,9 +40,10 @@ export class PermissionService {
   }
 
   async findUniq(where: Prisma.PermissionWhereUniqueInput) {
-    return this.prisma.permission.findUnique({
+    return this.prisma.permission.findUniqueOrThrow({
       where,
       include: {
+        group: true,
         roles: true,
         createdBy: true,
       },
@@ -56,6 +59,7 @@ export class PermissionService {
       data,
       where,
       include: {
+        group: true,
         roles: true,
         createdBy: true,
       },
@@ -72,6 +76,7 @@ export class PermissionService {
     return this.prisma.permission.delete({
       where,
       include: {
+        group: true,
         roles: true,
         createdBy: true,
       },

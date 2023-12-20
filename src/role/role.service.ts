@@ -10,6 +10,7 @@ export class RoleService {
     return this.prisma.role.create({
       data,
       include: {
+        users: true,
         permissions: true,
         createdBy: true,
       },
@@ -31,6 +32,7 @@ export class RoleService {
       where,
       orderBy,
       include: {
+        users: true,
         permissions: true,
         createdBy: true,
       },
@@ -38,9 +40,10 @@ export class RoleService {
   }
 
   async findUniq(where: Prisma.RoleWhereUniqueInput) {
-    return this.prisma.role.findUnique({
+    return this.prisma.role.findUniqueOrThrow({
       where,
       include: {
+        users: true,
         permissions: true,
         createdBy: true,
       },
@@ -56,6 +59,7 @@ export class RoleService {
       data,
       where,
       include: {
+        users: true,
         permissions: true,
         createdBy: true,
       },
@@ -72,6 +76,7 @@ export class RoleService {
     return this.prisma.role.delete({
       where,
       include: {
+        users: true,
         permissions: true,
         createdBy: true,
       },

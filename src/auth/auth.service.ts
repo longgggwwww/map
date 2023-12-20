@@ -32,6 +32,7 @@ export class AuthService {
       access_token: this.jwtService.sign({
         username: user.username,
         sub: user.userId,
+        roles: ['admin1'],
       }),
     };
   }
@@ -44,11 +45,6 @@ export class AuthService {
     return this.userService.create({
       username: signUpDto.username,
       password: hash,
-      personal: {
-        create: {
-          fullName: signUpDto.fullName,
-        },
-      },
     });
   }
 }

@@ -38,7 +38,7 @@ export class PositionService {
   }
 
   async findUniq(where: Prisma.PositionWhereUniqueInput) {
-    return this.prisma.position.findUnique({
+    return this.prisma.position.findUniqueOrThrow({
       where,
       include: {
         department: true,
