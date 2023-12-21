@@ -7,13 +7,17 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
+import { PrismaService } from 'nestjs-prisma';
+import { LoggingInterceptor } from 'src/logging/logging.interceptor';
 import { CreateProvinceDto } from './dto/create-province.dto';
 import { DeleteProvinceDto } from './dto/delete-province.dto';
 import { FindProvinceDto } from './dto/find-province.dto';
 import { UpdateProvinceDto } from './dto/update-province.dto';
 import { ProvinceService } from './province.service';
 
+@UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('provinces')
 export class ProvinceController {
   constructor(private readonly provinceService: ProvinceService) {}

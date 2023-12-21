@@ -20,19 +20,21 @@ export class LoggingInterceptor implements NestInterceptor {
         const { user, path, method, ip } = context
           .switchToHttp()
           .getRequest<Request>();
-        await this.prisma.log.create({
-          data: {
-            user: {
-              connect: {
-                id: (user as { userId: number }).userId,
+        if (method !== 'GET') {
+          await this.prisma.log.create({
+            data: {
+              user: {
+                connect: {
+                  id: (user as { userId: number }).userId,
+                },
               },
+              method,
+              url: path,
+              time: Date.now() - now,
+              ip,
             },
-            method,
-            url: path,
-            time: Date.now() - now,
-            ip,
-          },
-        });
+          });
+        }
         return data;
       }),
     );

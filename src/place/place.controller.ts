@@ -7,7 +7,12 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
+import { PrismaService } from 'nestjs-prisma';
+import { LoggingInterceptor } from 'src/logging/logging.interceptor';
+import { Permissions } from 'src/permission/decoratos/permission.decorator';
+import { Permission } from 'src/permission/enums/permission.enum';
 import { Roles } from 'src/role/decoratos/role.decorator';
 import { Role } from 'src/role/enums/role.enum';
 import { CreatePlaceDto } from './dto/create-place.dto';
@@ -17,6 +22,7 @@ import { ReviewPlaceDto } from './dto/review-place.dto';
 import { UpdatePlaceDto } from './dto/update-place.dto';
 import { PlaceService } from './place.service';
 
+@UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('places')
 export class PlaceController {
   constructor(private readonly placeService: PlaceService) {}
@@ -37,6 +43,7 @@ export class PlaceController {
   }
 
   @Roles(Role.Admin)
+  @Permissions(Permission.BrowsePost)
   @Patch('review/:id')
   review(@Param('id') id: string, @Body() reviewPlaceDto: ReviewPlaceDto) {
     return this.placeService.update({

@@ -7,7 +7,10 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
+import { PrismaService } from 'nestjs-prisma';
+import { LoggingInterceptor } from 'src/logging/logging.interceptor';
 import { Roles } from 'src/role/decoratos/role.decorator';
 import { Role } from 'src/role/enums/role.enum';
 import { CategoryService } from './category.service';
@@ -16,6 +19,7 @@ import { DeleteCategoryDto } from './dto/delete-category.dto';
 import { FindCategoryDto } from './dto/find-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
 
+@UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('categories')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}

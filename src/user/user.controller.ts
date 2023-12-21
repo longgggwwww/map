@@ -7,7 +7,10 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
+import { PrismaService } from 'nestjs-prisma';
+import { LoggingInterceptor } from 'src/logging/logging.interceptor';
 import { CreateUserDto } from './dto/create-user.dto';
 import { DeleteUserDto } from './dto/delete-user.dto';
 import { FindUserDto } from './dto/find-user.dto';
@@ -15,6 +18,7 @@ import { UpdateUserStatusDto } from './dto/update-user-status.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
 
+@UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}

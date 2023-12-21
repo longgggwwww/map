@@ -30,7 +30,7 @@ export class AuthService {
   async login(user: any) {
     const roles = user.roles.map((role) => role.code);
     return {
-      access_token: this.jwtService.sign({
+      accessToken: this.jwtService.sign({
         username: user.username,
         sub: user.id,
         roles,

@@ -7,13 +7,17 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
+import { PrismaService } from 'nestjs-prisma';
+import { LoggingInterceptor } from 'src/logging/logging.interceptor';
 import { CreatePositionDto } from './dto/create-position.dto';
 import { DeletePositionDto } from './dto/delete-position.dto';
 import { FindPositionDto } from './dto/find-position.dto';
 import { UpdatePositionDto } from './dto/update-position.dto';
 import { PositionService } from './position.service';
 
+@UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('positions')
 export class PositionController {
   constructor(private readonly positionService: PositionService) {}

@@ -7,13 +7,17 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
+import { PrismaService } from 'nestjs-prisma';
+import { LoggingInterceptor } from 'src/logging/logging.interceptor';
 import { CreateWardDto } from './dto/create-ward.dto';
 import { DeleteWardDto } from './dto/delete-ward.dto';
 import { FindWardDto } from './dto/find-ward.dto';
 import { UpdateWardDto } from './dto/update-ward.dto';
 import { WardService } from './ward.service';
 
+@UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('wards')
 export class WardController {
   constructor(private readonly wardService: WardService) {}

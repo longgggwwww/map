@@ -7,13 +7,17 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
+import { PrismaService } from 'nestjs-prisma';
+import { LoggingInterceptor } from 'src/logging/logging.interceptor';
 import { CreatePermissionDto } from './dto/create-permission.dto';
 import { DeletePermissionDto } from './dto/delete-permission.dto';
 import { FindPermissionDto } from './dto/find-permission.dto';
 import { UpdatePermissionDto } from './dto/update-permission.dto';
 import { PermissionService } from './permission.service';
 
+@UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('permissions')
 export class PermissionController {
   constructor(private readonly permissionService: PermissionService) {}

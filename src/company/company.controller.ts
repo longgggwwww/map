@@ -7,13 +7,17 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
+import { PrismaService } from 'nestjs-prisma';
+import { LoggingInterceptor } from 'src/logging/logging.interceptor';
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { DeleteCompanyDto } from './dto/delete-company.dto';
 import { FindCompanyDto } from './dto/find-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 
+@UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('companies')
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}

@@ -7,13 +7,17 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
+import { PrismaService } from 'nestjs-prisma';
+import { LoggingInterceptor } from 'src/logging/logging.interceptor';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { DeleteRoleDto } from './dto/delete-role.dto';
 import { FindRoleDto } from './dto/find-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { RoleService } from './role.service';
 
+@UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('roles')
 export class RoleController {
   constructor(private readonly roleService: RoleService) {}

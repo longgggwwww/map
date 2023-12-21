@@ -7,13 +7,17 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
+import { PrismaService } from 'nestjs-prisma';
+import { LoggingInterceptor } from 'src/logging/logging.interceptor';
 import { CreateGroupDto } from './dto/create-group.dto';
 import { DeleteGroupDto } from './dto/delete-group.dto';
 import { FindGroupDto } from './dto/find-group.dto';
 import { UpdateGroupDto } from './dto/update-group.dto';
 import { GroupService } from './group.service';
 
+@UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('groups')
 export class GroupController {
   constructor(private readonly groupService: GroupService) {}

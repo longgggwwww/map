@@ -7,13 +7,17 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
+import { PrismaService } from 'nestjs-prisma';
+import { LoggingInterceptor } from 'src/logging/logging.interceptor';
 import { DepartmentService } from './department.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { DeleteDepartmentDto } from './dto/delete-department.dto';
 import { FindDepartmentDto } from './dto/find-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
 
+@UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('departments')
 export class DepartmentController {
   constructor(private readonly departmentService: DepartmentService) {}

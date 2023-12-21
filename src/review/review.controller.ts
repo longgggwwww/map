@@ -7,13 +7,17 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
+import { PrismaService } from 'nestjs-prisma';
+import { LoggingInterceptor } from 'src/logging/logging.interceptor';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { DeleteReviewDto } from './dto/delete-review.dto';
 import { FindReviewDto } from './dto/find-review.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { ReviewService } from './review.service';
 
+@UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('reviews')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}

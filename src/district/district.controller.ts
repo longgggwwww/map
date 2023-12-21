@@ -7,13 +7,17 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
+import { PrismaService } from 'nestjs-prisma';
+import { LoggingInterceptor } from 'src/logging/logging.interceptor';
 import { DistrictService } from './district.service';
 import { CreateDistrictDto } from './dto/create-district.dto';
 import { DeleteDistrictDto } from './dto/delete-district.dto';
 import { FindDistrictDto } from './dto/find-district.dto';
 import { UpdateDistrictDto } from './dto/update-district.dto';
 
+@UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('districts')
 export class DistrictController {
   constructor(private readonly districtService: DistrictService) {}
