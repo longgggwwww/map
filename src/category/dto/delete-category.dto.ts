@@ -1,3 +1,3 @@
 export class DeleteCategoryDto {
-  ids: number[];
+    ids: number[];
 }

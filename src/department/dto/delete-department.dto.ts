@@ -1,3 +1,3 @@
 export class DeleteDepartmentDto {
-  ids: number[];
+    ids: number[];
 }

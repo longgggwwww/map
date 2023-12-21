@@ -1,4 +1,4 @@
 export class UpdateUserStatusDto {
-  userIds: number[];
-  status: boolean;
+    userIds: number[];
+    status: boolean;
 }
