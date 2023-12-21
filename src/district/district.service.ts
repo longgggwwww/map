@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { Prisma } from "@prisma/client";
-import { PrismaService } from "nestjs-prisma";
+import { Injectable } from '@nestjs/common'
+import { Prisma } from '@prisma/client'
+import { PrismaService } from 'nestjs-prisma'
 
 @Injectable()
 export class DistrictService {
@@ -13,17 +13,17 @@ export class DistrictService {
                 province: true,
                 wards: true,
             },
-        });
+        })
     }
 
     async findAll(params: {
-        skip?: number;
-        take?: number;
-        cursor?: Prisma.DistrictWhereUniqueInput;
-        where?: Prisma.DistrictWhereInput;
-        orderBy?: Prisma.DistrictOrderByWithRelationInput;
+        skip?: number
+        take?: number
+        cursor?: Prisma.DistrictWhereUniqueInput
+        where?: Prisma.DistrictWhereInput
+        orderBy?: Prisma.DistrictOrderByWithRelationInput
     }) {
-        const { skip, take, cursor, where, orderBy } = params;
+        const { skip, take, cursor, where, orderBy } = params
         return this.prisma.district.findMany({
             skip,
             take,
@@ -34,7 +34,7 @@ export class DistrictService {
                 province: true,
                 wards: true,
             },
-        });
+        })
     }
 
     async findUniq(where: Prisma.DistrictWhereUniqueInput) {
@@ -44,14 +44,14 @@ export class DistrictService {
                 province: true,
                 wards: true,
             },
-        });
+        })
     }
 
     async update(params: {
-        where: Prisma.DistrictWhereUniqueInput;
-        data: Prisma.DistrictUpdateInput;
+        where: Prisma.DistrictWhereUniqueInput
+        data: Prisma.DistrictUpdateInput
     }) {
-        const { where, data } = params;
+        const { where, data } = params
         return this.prisma.district.update({
             data,
             where,
@@ -59,13 +59,13 @@ export class DistrictService {
                 province: true,
                 wards: true,
             },
-        });
+        })
     }
 
     async removeMany(where: Prisma.DistrictWhereInput) {
         return this.prisma.district.deleteMany({
             where,
-        });
+        })
     }
 
     async remove(where: Prisma.DistrictWhereUniqueInput) {
@@ -75,6 +75,6 @@ export class DistrictService {
                 province: true,
                 wards: true,
             },
-        });
+        })
     }
 }

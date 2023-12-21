@@ -1,3 +1,3 @@
 export class DeleteProvinceDto {
-    ids: number[];
+    ids: number[]
 }

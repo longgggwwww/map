@@ -1,3 +1,3 @@
 export class ReviewPlaceDto {
-    status: number;
+    status: number
 }

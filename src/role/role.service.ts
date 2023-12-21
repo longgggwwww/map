@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { Prisma } from "@prisma/client";
-import { PrismaService } from "nestjs-prisma";
+import { Injectable } from '@nestjs/common'
+import { Prisma } from '@prisma/client'
+import { PrismaService } from 'nestjs-prisma'
 
 @Injectable()
 export class RoleService {
@@ -14,17 +14,17 @@ export class RoleService {
                 permissions: true,
                 createdBy: true,
             },
-        });
+        })
     }
 
     async findAll(params: {
-        skip?: number;
-        take?: number;
-        cursor?: Prisma.RoleWhereUniqueInput;
-        where?: Prisma.RoleWhereInput;
-        orderBy?: Prisma.RoleOrderByWithRelationInput;
+        skip?: number
+        take?: number
+        cursor?: Prisma.RoleWhereUniqueInput
+        where?: Prisma.RoleWhereInput
+        orderBy?: Prisma.RoleOrderByWithRelationInput
     }) {
-        const { skip, take, cursor, where, orderBy } = params;
+        const { skip, take, cursor, where, orderBy } = params
         return this.prisma.role.findMany({
             skip,
             take,
@@ -36,7 +36,7 @@ export class RoleService {
                 permissions: true,
                 createdBy: true,
             },
-        });
+        })
     }
 
     async findUniq(where: Prisma.RoleWhereUniqueInput) {
@@ -47,14 +47,14 @@ export class RoleService {
                 permissions: true,
                 createdBy: true,
             },
-        });
+        })
     }
 
     async update(params: {
-        where: Prisma.RoleWhereUniqueInput;
-        data: Prisma.RoleUpdateInput;
+        where: Prisma.RoleWhereUniqueInput
+        data: Prisma.RoleUpdateInput
     }) {
-        const { where, data } = params;
+        const { where, data } = params
         return this.prisma.role.update({
             data,
             where,
@@ -63,13 +63,13 @@ export class RoleService {
                 permissions: true,
                 createdBy: true,
             },
-        });
+        })
     }
 
     async removeMany(where: Prisma.RoleWhereInput) {
         return this.prisma.role.deleteMany({
             where,
-        });
+        })
     }
 
     async remove(where: Prisma.RoleWhereUniqueInput) {
@@ -80,6 +80,6 @@ export class RoleService {
                 permissions: true,
                 createdBy: true,
             },
-        });
+        })
     }
 }

@@ -1,9 +1,9 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from '@prisma/client'
 
 export class FindPermissionDto {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.PermissionWhereUniqueInput;
-    where?: Prisma.PermissionWhereInput;
-    orderBy?: Prisma.PermissionOrderByWithRelationInput;
+    skip?: number
+    take?: number
+    cursor?: Prisma.PermissionWhereUniqueInput
+    where?: Prisma.PermissionWhereInput
+    orderBy?: Prisma.PermissionOrderByWithRelationInput
 }

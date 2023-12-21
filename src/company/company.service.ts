@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { Prisma } from "@prisma/client";
-import { PrismaService } from "nestjs-prisma";
+import { Injectable } from '@nestjs/common'
+import { Prisma } from '@prisma/client'
+import { PrismaService } from 'nestjs-prisma'
 
 @Injectable()
 export class CompanyService {
@@ -12,17 +12,17 @@ export class CompanyService {
             include: {
                 departments: true,
             },
-        });
+        })
     }
 
     async findAll(params: {
-        skip?: number;
-        take?: number;
-        cursor?: Prisma.CompanyWhereUniqueInput;
-        where?: Prisma.CompanyWhereInput;
-        orderBy?: Prisma.CompanyOrderByWithRelationInput;
+        skip?: number
+        take?: number
+        cursor?: Prisma.CompanyWhereUniqueInput
+        where?: Prisma.CompanyWhereInput
+        orderBy?: Prisma.CompanyOrderByWithRelationInput
     }) {
-        const { skip, take, cursor, where, orderBy } = params;
+        const { skip, take, cursor, where, orderBy } = params
         return this.prisma.company.findMany({
             skip,
             take,
@@ -32,7 +32,7 @@ export class CompanyService {
             include: {
                 departments: true,
             },
-        });
+        })
     }
 
     async findUniq(where: Prisma.CompanyWhereUniqueInput) {
@@ -41,27 +41,27 @@ export class CompanyService {
             include: {
                 departments: true,
             },
-        });
+        })
     }
 
     async update(params: {
-        where: Prisma.CompanyWhereUniqueInput;
-        data: Prisma.CompanyUpdateInput;
+        where: Prisma.CompanyWhereUniqueInput
+        data: Prisma.CompanyUpdateInput
     }) {
-        const { where, data } = params;
+        const { where, data } = params
         return this.prisma.company.update({
             data,
             where,
             include: {
                 departments: true,
             },
-        });
+        })
     }
 
     async removeMany(where: Prisma.CompanyWhereInput) {
         return this.prisma.company.deleteMany({
             where,
-        });
+        })
     }
 
     async remove(where: Prisma.CompanyWhereUniqueInput) {
@@ -70,6 +70,6 @@ export class CompanyService {
             include: {
                 departments: true,
             },
-        });
+        })
     }
 }

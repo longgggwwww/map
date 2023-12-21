@@ -1,3 +1,3 @@
 export class DeleteUserDto {
-    ids: number[];
+    ids: number[]
 }

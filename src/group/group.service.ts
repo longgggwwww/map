@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { Prisma } from "@prisma/client";
-import { PrismaService } from "nestjs-prisma";
+import { Injectable } from '@nestjs/common'
+import { Prisma } from '@prisma/client'
+import { PrismaService } from 'nestjs-prisma'
 
 @Injectable()
 export class GroupService {
@@ -12,17 +12,17 @@ export class GroupService {
             include: {
                 permissions: true,
             },
-        });
+        })
     }
 
     async findAll(params: {
-        skip?: number;
-        take?: number;
-        cursor?: Prisma.PermissionGroupWhereUniqueInput;
-        where?: Prisma.PermissionGroupWhereInput;
-        orderBy?: Prisma.PermissionGroupOrderByWithRelationInput;
+        skip?: number
+        take?: number
+        cursor?: Prisma.PermissionGroupWhereUniqueInput
+        where?: Prisma.PermissionGroupWhereInput
+        orderBy?: Prisma.PermissionGroupOrderByWithRelationInput
     }) {
-        const { skip, take, cursor, where, orderBy } = params;
+        const { skip, take, cursor, where, orderBy } = params
         return this.prisma.permissionGroup.findMany({
             skip,
             take,
@@ -32,7 +32,7 @@ export class GroupService {
             include: {
                 permissions: true,
             },
-        });
+        })
     }
 
     async findUniq(where: Prisma.PermissionGroupWhereUniqueInput) {
@@ -41,27 +41,27 @@ export class GroupService {
             include: {
                 permissions: true,
             },
-        });
+        })
     }
 
     async update(params: {
-        where: Prisma.PermissionGroupWhereUniqueInput;
-        data: Prisma.PermissionGroupUpdateInput;
+        where: Prisma.PermissionGroupWhereUniqueInput
+        data: Prisma.PermissionGroupUpdateInput
     }) {
-        const { where, data } = params;
+        const { where, data } = params
         return this.prisma.permissionGroup.update({
             data,
             where,
             include: {
                 permissions: true,
             },
-        });
+        })
     }
 
     async removeMany(where: Prisma.PermissionGroupWhereInput) {
         return this.prisma.permissionGroup.deleteMany({
             where,
-        });
+        })
     }
 
     async remove(where: Prisma.PermissionGroupWhereUniqueInput) {
@@ -70,6 +70,6 @@ export class GroupService {
             include: {
                 permissions: true,
             },
-        });
+        })
     }
 }

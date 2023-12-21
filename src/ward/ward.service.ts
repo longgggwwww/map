@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { Prisma } from "@prisma/client";
-import { PrismaService } from "nestjs-prisma";
+import { Injectable } from '@nestjs/common'
+import { Prisma } from '@prisma/client'
+import { PrismaService } from 'nestjs-prisma'
 
 @Injectable()
 export class WardService {
@@ -13,17 +13,17 @@ export class WardService {
                 district: true,
                 persons: true,
             },
-        });
+        })
     }
 
     async findAll(params: {
-        skip?: number;
-        take?: number;
-        cursor?: Prisma.WardWhereUniqueInput;
-        where?: Prisma.WardWhereInput;
-        orderBy?: Prisma.WardOrderByWithRelationInput;
+        skip?: number
+        take?: number
+        cursor?: Prisma.WardWhereUniqueInput
+        where?: Prisma.WardWhereInput
+        orderBy?: Prisma.WardOrderByWithRelationInput
     }) {
-        const { skip, take, cursor, where, orderBy } = params;
+        const { skip, take, cursor, where, orderBy } = params
         return this.prisma.ward.findMany({
             skip,
             take,
@@ -34,7 +34,7 @@ export class WardService {
                 district: true,
                 persons: true,
             },
-        });
+        })
     }
 
     async findUniq(where: Prisma.WardWhereUniqueInput) {
@@ -44,14 +44,14 @@ export class WardService {
                 district: true,
                 persons: true,
             },
-        });
+        })
     }
 
     async update(params: {
-        where: Prisma.WardWhereUniqueInput;
-        data: Prisma.WardUpdateInput;
+        where: Prisma.WardWhereUniqueInput
+        data: Prisma.WardUpdateInput
     }) {
-        const { where, data } = params;
+        const { where, data } = params
         return this.prisma.ward.update({
             data,
             where,
@@ -59,13 +59,13 @@ export class WardService {
                 district: true,
                 persons: true,
             },
-        });
+        })
     }
 
     async removeMany(where: Prisma.WardWhereInput) {
         return this.prisma.ward.deleteMany({
             where,
-        });
+        })
     }
 
     async remove(where: Prisma.WardWhereUniqueInput) {
@@ -75,6 +75,6 @@ export class WardService {
                 district: true,
                 persons: true,
             },
-        });
+        })
     }
 }

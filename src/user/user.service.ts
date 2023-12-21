@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { Prisma } from "@prisma/client";
-import { PrismaService } from "nestjs-prisma";
+import { Injectable } from '@nestjs/common'
+import { Prisma } from '@prisma/client'
+import { PrismaService } from 'nestjs-prisma'
 
 @Injectable()
 export class UserService {
@@ -23,17 +23,17 @@ export class UserService {
                 createdPermissions: true,
                 log: true,
             },
-        });
+        })
     }
 
     async findAll(params: {
-        skip?: number;
-        take?: number;
-        cursor?: Prisma.UserWhereUniqueInput;
-        where?: Prisma.UserWhereInput;
-        orderBy?: Prisma.UserOrderByWithRelationInput;
+        skip?: number
+        take?: number
+        cursor?: Prisma.UserWhereUniqueInput
+        where?: Prisma.UserWhereInput
+        orderBy?: Prisma.UserOrderByWithRelationInput
     }) {
-        const { skip, take, cursor, where, orderBy } = params;
+        const { skip, take, cursor, where, orderBy } = params
         return this.prisma.user.findMany({
             skip,
             take,
@@ -54,7 +54,7 @@ export class UserService {
                 createdPermissions: true,
                 log: true,
             },
-        });
+        })
     }
 
     async findUniq(where: Prisma.UserWhereUniqueInput) {
@@ -74,14 +74,14 @@ export class UserService {
                 createdPermissions: true,
                 log: true,
             },
-        });
+        })
     }
 
     async update(params: {
-        where: Prisma.UserWhereUniqueInput;
-        data: Prisma.UserUpdateInput;
+        where: Prisma.UserWhereUniqueInput
+        data: Prisma.UserUpdateInput
     }) {
-        const { where, data } = params;
+        const { where, data } = params
         return this.prisma.user.update({
             data,
             where,
@@ -99,13 +99,17 @@ export class UserService {
                 createdPermissions: true,
                 log: true,
             },
-        });
+        })
+    }
+
+    async updateMyProflie(params: {}) {
+        return 'Developing...'
     }
 
     async removeMany(where: Prisma.UserWhereInput) {
         return this.prisma.user.deleteMany({
             where,
-        });
+        })
     }
 
     async remove(where: Prisma.UserWhereUniqueInput) {
@@ -125,21 +129,21 @@ export class UserService {
                 createdPermissions: true,
                 log: true,
             },
-        });
+        })
     }
 
     async updateUserStatus(params: {
-        where: Prisma.UserWhereInput;
+        where: Prisma.UserWhereInput
         data: {
-            status: boolean;
-        };
+            status: boolean
+        }
     }) {
-        const { where, data } = params;
+        const { where, data } = params
         return this.prisma.user.updateMany({
             data: {
                 isActive: data.status,
             },
             where,
-        });
+        })
     }
 }

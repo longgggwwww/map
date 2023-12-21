@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-import { Prisma } from "@prisma/client";
-import { PrismaService } from "nestjs-prisma";
+import { Injectable } from '@nestjs/common'
+import { Prisma } from '@prisma/client'
+import { PrismaService } from 'nestjs-prisma'
 
 @Injectable()
 export class ReviewService {
@@ -13,17 +13,17 @@ export class ReviewService {
                 place: true,
                 user: true,
             },
-        });
+        })
     }
 
     async findAll(params: {
-        skip?: number;
-        take?: number;
-        cursor?: Prisma.ReviewWhereUniqueInput;
-        where?: Prisma.ReviewWhereInput;
-        orderBy?: Prisma.ReviewOrderByWithRelationInput;
+        skip?: number
+        take?: number
+        cursor?: Prisma.ReviewWhereUniqueInput
+        where?: Prisma.ReviewWhereInput
+        orderBy?: Prisma.ReviewOrderByWithRelationInput
     }) {
-        const { skip, take, cursor, where, orderBy } = params;
+        const { skip, take, cursor, where, orderBy } = params
         return this.prisma.review.findMany({
             skip,
             take,
@@ -34,7 +34,7 @@ export class ReviewService {
                 place: true,
                 user: true,
             },
-        });
+        })
     }
 
     async findUniq(where: Prisma.ReviewWhereUniqueInput) {
@@ -44,14 +44,14 @@ export class ReviewService {
                 place: true,
                 user: true,
             },
-        });
+        })
     }
 
     async update(params: {
-        where: Prisma.ReviewWhereUniqueInput;
-        data: Prisma.ReviewUpdateInput;
+        where: Prisma.ReviewWhereUniqueInput
+        data: Prisma.ReviewUpdateInput
     }) {
-        const { where, data } = params;
+        const { where, data } = params
         return this.prisma.review.update({
             data,
             where,
@@ -59,13 +59,13 @@ export class ReviewService {
                 place: true,
                 user: true,
             },
-        });
+        })
     }
 
     async removeMany(where: Prisma.ReviewWhereInput) {
         return this.prisma.review.deleteMany({
             where,
-        });
+        })
     }
 
     async remove(where: Prisma.ReviewWhereUniqueInput) {
@@ -75,6 +75,6 @@ export class ReviewService {
                 place: true,
                 user: true,
             },
-        });
+        })
     }
 }
