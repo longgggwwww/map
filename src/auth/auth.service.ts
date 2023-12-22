@@ -29,11 +29,18 @@ export class AuthService {
 
     async login(user: any) {
         const roles = user.roles.map((role) => role.code)
+        const permissions = Array.from(
+            user.roles.reduce((set, role) => {
+                role.permissions.map((perm) => set.add(perm.code))
+                return set
+            }, new Set()),
+        )
         return {
             accessToken: this.jwtService.sign({
                 username: user.username,
                 sub: user.id,
                 roles,
+                permissions,
             }),
         }
     }

@@ -2,13 +2,19 @@ import {
     Body,
     Controller,
     Delete,
+    FileTypeValidator,
     Get,
+    MaxFileSizeValidator,
     Param,
+    ParseFilePipe,
     Patch,
     Post,
     Query,
+    UploadedFiles,
     UseInterceptors,
 } from '@nestjs/common'
+import { FilesInterceptor } from '@nestjs/platform-express'
+import { diskStorage } from 'multer'
 import { PrismaService } from 'nestjs-prisma'
 import { LoggingInterceptor } from 'src/logging/logging.interceptor'
 import { Permissions } from 'src/permission/decoratos/permission.decorator'
@@ -26,6 +32,38 @@ import { PlaceService } from './place.service'
 @Controller('places')
 export class PlaceController {
     constructor(private readonly placeService: PlaceService) {}
+
+    @Post('upload')
+    @UseInterceptors(
+        FilesInterceptor('photos', 10, {
+            storage: diskStorage({
+                destination: 'uploads',
+                filename(_req, file, callback) {
+                    callback(
+                        null,
+                        Buffer.from(file.originalname, 'latin1').toString(
+                            'utf8',
+                        ),
+                    )
+                },
+            }),
+        }),
+    )
+    upload(
+        @UploadedFiles(
+            new ParseFilePipe({
+                validators: [
+                    new MaxFileSizeValidator({ maxSize: 1000000 }),
+                    new FileTypeValidator({
+                        fileType: /(jpeg|jpg|png)$/i,
+                    }),
+                ],
+            }),
+        )
+        files: Express.Multer.File[],
+    ) {
+        return files
+    }
 
     @Post()
     create(@Body() createPlaceDto: CreatePlaceDto) {

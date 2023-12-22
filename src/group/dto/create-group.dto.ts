@@ -5,4 +5,5 @@ export class CreateGroupDto implements Prisma.PermissionGroupCreateInput {
     createdAt?: string | Date
     updatedAt?: string | Date
     permissions?: Prisma.PermissionCreateNestedManyWithoutGroupInput
+    createdBy?: Prisma.UserCreateNestedOneWithoutCreatedGroupsInput
 }

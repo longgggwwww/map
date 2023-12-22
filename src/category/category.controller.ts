@@ -11,8 +11,6 @@ import {
 } from '@nestjs/common'
 import { PrismaService } from 'nestjs-prisma'
 import { LoggingInterceptor } from 'src/logging/logging.interceptor'
-import { Roles } from 'src/role/decoratos/role.decorator'
-import { Role } from 'src/role/enums/role.enum'
 import { CategoryService } from './category.service'
 import { CreateCategoryDto } from './dto/create-category.dto'
 import { DeleteCategoryDto } from './dto/delete-category.dto'
@@ -29,7 +27,6 @@ export class CategoryController {
         return this.categoryService.create(createCategoryDto)
     }
 
-    @Roles(Role.Admin)
     @Get()
     findAll(@Query() findCategoryDto: FindCategoryDto) {
         return this.categoryService.findAll(findCategoryDto)
