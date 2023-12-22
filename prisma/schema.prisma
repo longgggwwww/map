@@ -69,8 +69,8 @@ model PermissionGroup {
 
 model Permission {
   id          Int             @id @default(autoincrement())
-  code        String          @unique
   label       String
+  code        String          @unique
   group       PermissionGroup @relation(fields: [groupId], references: [id])
   groupId     Int
   roles       Role[]

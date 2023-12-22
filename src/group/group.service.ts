@@ -11,6 +11,7 @@ export class GroupService {
             data,
             include: {
                 permissions: true,
+                createdBy: true,
             },
         })
     }
@@ -31,6 +32,7 @@ export class GroupService {
             orderBy,
             include: {
                 permissions: true,
+                createdBy: true,
             },
         })
     }
@@ -40,6 +42,7 @@ export class GroupService {
             where,
             include: {
                 permissions: true,
+                createdBy: true,
             },
         })
     }
@@ -54,6 +57,7 @@ export class GroupService {
             where,
             include: {
                 permissions: true,
+                createdBy: true,
             },
         })
     }
@@ -69,6 +73,7 @@ export class GroupService {
             where,
             include: {
                 permissions: true,
+                createdBy: true,
             },
         })
     }
