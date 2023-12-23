@@ -10,7 +10,11 @@ export class ProvinceService {
         return this.prisma.province.create({
             data,
             include: {
-                districts: true,
+                districts: {
+                    include: {
+                        wards: true,
+                    },
+                },
             },
         })
     }
@@ -30,7 +34,11 @@ export class ProvinceService {
             where,
             orderBy,
             include: {
-                districts: true,
+                districts: {
+                    include: {
+                        wards: true,
+                    },
+                },
             },
         })
     }
@@ -39,7 +47,11 @@ export class ProvinceService {
         return this.prisma.province.findUniqueOrThrow({
             where,
             include: {
-                districts: true,
+                districts: {
+                    include: {
+                        wards: true,
+                    },
+                },
             },
         })
     }
@@ -53,7 +65,11 @@ export class ProvinceService {
             data,
             where,
             include: {
-                districts: true,
+                districts: {
+                    include: {
+                        wards: true,
+                    },
+                },
             },
         })
     }
@@ -68,7 +84,11 @@ export class ProvinceService {
         return this.prisma.province.delete({
             where,
             include: {
-                districts: true,
+                districts: {
+                    include: {
+                        wards: true,
+                    },
+                },
             },
         })
     }

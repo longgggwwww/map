@@ -4,7 +4,11 @@ import { PlaceController } from './place.controller'
 import { PlaceService } from './place.service'
 
 @Module({
-    imports: [MulterModule.register({ dest: 'uploads' })],
+    imports: [
+        MulterModule.register({
+            dest: 'uploads',
+        }),
+    ],
     controllers: [PlaceController],
     providers: [PlaceService],
 })

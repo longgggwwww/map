@@ -53,6 +53,9 @@ export class AuthService {
         return this.userService.create({
             username: signUpDto.username,
             password: hash,
+            personal: {
+                create: {},
+            },
         })
     }
 }

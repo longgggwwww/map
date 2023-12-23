@@ -2,16 +2,23 @@ import {
     Body,
     Controller,
     Delete,
+    FileTypeValidator,
     Get,
+    MaxFileSizeValidator,
     Param,
+    ParseFilePipe,
     Patch,
     Post,
     Query,
     Request,
+    UploadedFile,
     UseInterceptors,
 } from '@nestjs/common'
+import { FileInterceptor } from '@nestjs/platform-express'
+import { diskStorage } from 'multer'
 import { PrismaService } from 'nestjs-prisma'
 import { LoggingInterceptor } from 'src/logging/logging.interceptor'
+import { ChangePasswordDto } from './dto/change-pass-user.dto'
 import { CreateUserDto } from './dto/create-user.dto'
 import { DeleteUserDto } from './dto/delete-user.dto'
 import { FindUserDto } from './dto/find-user.dto'
@@ -24,6 +31,50 @@ import { UserService } from './user.service'
 @Controller('users')
 export class UserController {
     constructor(private readonly userService: UserService) {}
+
+    @Post('me/avatar')
+    @UseInterceptors(
+        FileInterceptor('photo', {
+            storage: diskStorage({
+                destination: 'uploads/avatars',
+                filename(_req, file, callback) {
+                    callback(
+                        null,
+                        Buffer.from(file.originalname, 'latin1').toString(
+                            'utf8',
+                        ),
+                    )
+                },
+            }),
+        }),
+    )
+    uploadAvt(
+        @UploadedFile(
+            new ParseFilePipe({
+                validators: [
+                    new MaxFileSizeValidator({ maxSize: 1000000 }),
+                    new FileTypeValidator({
+                        fileType: /(jpeg|jpg|png)$/i,
+                    }),
+                ],
+            }),
+        )
+        file: Express.Multer.File,
+        @Request() req,
+    ) {
+        return this.userService.update({
+            where: {
+                id: +req.user.userId,
+            },
+            data: {
+                personal: {
+                    update: {
+                        image: file.path,
+                    },
+                },
+            },
+        })
+    }
 
     @Post()
     create(@Body() createUserDto: CreateUserDto) {
@@ -59,6 +110,19 @@ export class UserController {
         })
     }
 
+    @Patch('me/password')
+    changePassword(
+        @Body() changePasswordDto: ChangePasswordDto,
+        @Request() req,
+    ) {
+        return this.userService.changePassword({
+            where: {
+                id: +req.user.userId,
+            },
+            data: changePasswordDto,
+        })
+    }
+
     @Patch('profile')
     updateProfile(
         @Request() req,
@@ -68,7 +132,11 @@ export class UserController {
             where: {
                 id: +req.user.userId,
             },
-            data: updateMyProfileDto,
+            data: {
+                personal: {
+                    update: updateMyProfileDto,
+                },
+            },
         })
     }
 

@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { Prisma } from '@prisma/client'
+import * as bcrypt from 'bcrypt'
 import { PrismaService } from 'nestjs-prisma'
+import { ChangePasswordDto } from './dto/change-pass-user.dto'
 
 @Injectable()
 export class UserService {
@@ -82,8 +84,9 @@ export class UserService {
         data: Prisma.UserUpdateInput
     }) {
         const { where, data } = params
+        const { password, ...rest } = data
         return this.prisma.user.update({
-            data,
+            data: rest,
             where,
             include: {
                 roles: {
@@ -100,10 +103,6 @@ export class UserService {
                 log: true,
             },
         })
-    }
-
-    async updateMyProflie(params: {}) {
-        return 'Developing...'
     }
 
     async removeMany(where: Prisma.UserWhereInput) {
@@ -144,6 +143,21 @@ export class UserService {
                 isActive: data.status,
             },
             where,
+        })
+    }
+
+    async changePassword(params: {
+        where: Prisma.UserWhereUniqueInput
+        data: ChangePasswordDto
+    }) {
+        const { where, data } = params
+        const salt = await bcrypt.genSalt(10)
+        const hash = await bcrypt.hash(data.password, salt)
+        return this.prisma.user.update({
+            where,
+            data: {
+                password: hash,
+            },
         })
     }
 }
