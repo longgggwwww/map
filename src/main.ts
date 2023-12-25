@@ -19,7 +19,7 @@ BigInt.prototype.toJSON = function (): string {
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule)
-    app.use('uploads', static_('uploads'))
+    app.use('/uploads', static_('uploads'))
     app.enableCors()
     const { httpAdapter } = app.get(HttpAdapterHost)
     app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter))

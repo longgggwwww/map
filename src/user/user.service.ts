@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { Prisma } from '@prisma/client'
 import * as bcrypt from 'bcrypt'
 import { PrismaService } from 'nestjs-prisma'
@@ -20,7 +20,19 @@ export class UserService {
                 myPlaces: true,
                 createdCategories: true,
                 reviews: true,
-                personal: true,
+                personal: {
+                    include: {
+                        ward: {
+                            include: {
+                                district: {
+                                    include: {
+                                        province: true,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
                 createdRoles: true,
                 createdPermissions: true,
                 log: true,
@@ -51,7 +63,19 @@ export class UserService {
                 myPlaces: true,
                 createdCategories: true,
                 reviews: true,
-                personal: true,
+                personal: {
+                    include: {
+                        ward: {
+                            include: {
+                                district: {
+                                    include: {
+                                        province: true,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
                 createdRoles: true,
                 createdPermissions: true,
                 log: true,
@@ -71,7 +95,19 @@ export class UserService {
                 myPlaces: true,
                 createdCategories: true,
                 reviews: true,
-                personal: true,
+                personal: {
+                    include: {
+                        ward: {
+                            include: {
+                                district: {
+                                    include: {
+                                        province: true,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
                 createdRoles: true,
                 createdPermissions: true,
                 log: true,
@@ -97,7 +133,19 @@ export class UserService {
                 myPlaces: true,
                 createdCategories: true,
                 reviews: true,
-                personal: true,
+                personal: {
+                    include: {
+                        ward: {
+                            include: {
+                                district: {
+                                    include: {
+                                        province: true,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
                 createdRoles: true,
                 createdPermissions: true,
                 log: true,
@@ -123,7 +171,19 @@ export class UserService {
                 myPlaces: true,
                 createdCategories: true,
                 reviews: true,
-                personal: true,
+                personal: {
+                    include: {
+                        ward: {
+                            include: {
+                                district: {
+                                    include: {
+                                        province: true,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
                 createdRoles: true,
                 createdPermissions: true,
                 log: true,
@@ -151,12 +211,43 @@ export class UserService {
         data: ChangePasswordDto
     }) {
         const { where, data } = params
+        const user = await this.prisma.user.findUniqueOrThrow({ where })
+        const isMatch = await bcrypt.compare(data.password, user.password)
+        if (!isMatch) {
+            throw new UnauthorizedException()
+        }
         const salt = await bcrypt.genSalt(10)
-        const hash = await bcrypt.hash(data.password, salt)
+        const hash = await bcrypt.hash(data.newPassword, salt)
         return this.prisma.user.update({
             where,
             data: {
                 password: hash,
+            },
+            include: {
+                roles: {
+                    include: {
+                        permissions: true,
+                    },
+                },
+                myPlaces: true,
+                createdCategories: true,
+                reviews: true,
+                personal: {
+                    include: {
+                        ward: {
+                            include: {
+                                district: {
+                                    include: {
+                                        province: true,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+                createdRoles: true,
+                createdPermissions: true,
+                log: true,
             },
         })
     }

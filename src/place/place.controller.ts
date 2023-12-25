@@ -33,7 +33,7 @@ import { PlaceService } from './place.service'
 export class PlaceController {
     constructor(private readonly placeService: PlaceService) {}
 
-    @Post('upload')
+    @Post('upload/:id')
     @UseInterceptors(
         FilesInterceptor('photos', 10, {
             storage: diskStorage({
@@ -50,6 +50,7 @@ export class PlaceController {
         }),
     )
     upload(
+        @Param('id') id: string,
         @UploadedFiles(
             new ParseFilePipe({
                 validators: [
@@ -62,7 +63,14 @@ export class PlaceController {
         )
         files: Express.Multer.File[],
     ) {
-        return files
+        return this.placeService.update({
+            where: {
+                id: +id,
+            },
+            data: {
+                photos: files.map((file) => file.path),
+            },
+        })
     }
 
     @Post()

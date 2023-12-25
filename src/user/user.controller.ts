@@ -128,13 +128,15 @@ export class UserController {
         @Request() req,
         @Body() updateMyProfileDto: UpdateMyProfileDto,
     ) {
+        const date = new Date(updateMyProfileDto.birthday)
+        const form = { ...updateMyProfileDto, birthday: date }
         return this.userService.update({
             where: {
                 id: +req.user.userId,
             },
             data: {
                 personal: {
-                    update: updateMyProfileDto,
+                    update: form,
                 },
             },
         })

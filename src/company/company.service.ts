@@ -10,7 +10,11 @@ export class CompanyService {
         return this.prisma.company.create({
             data,
             include: {
-                departments: true,
+                departments: {
+                    include: {
+                        positions: true,
+                    },
+                },
             },
         })
     }
@@ -30,7 +34,11 @@ export class CompanyService {
             where,
             orderBy,
             include: {
-                departments: true,
+                departments: {
+                    include: {
+                        positions: true,
+                    },
+                },
             },
         })
     }
@@ -39,7 +47,11 @@ export class CompanyService {
         return this.prisma.company.findUniqueOrThrow({
             where,
             include: {
-                departments: true,
+                departments: {
+                    include: {
+                        positions: true,
+                    },
+                },
             },
         })
     }
@@ -53,7 +65,11 @@ export class CompanyService {
             data,
             where,
             include: {
-                departments: true,
+                departments: {
+                    include: {
+                        positions: true,
+                    },
+                },
             },
         })
     }
@@ -68,7 +84,11 @@ export class CompanyService {
         return this.prisma.company.delete({
             where,
             include: {
-                departments: true,
+                departments: {
+                    include: {
+                        positions: true,
+                    },
+                },
             },
         })
     }

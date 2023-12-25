@@ -42,6 +42,7 @@ export class AuthService {
                 roles,
                 permissions,
             }),
+            user,
         }
     }
 
@@ -50,12 +51,13 @@ export class AuthService {
 
         const salt = await bcrypt.genSalt(10)
         const hash = await bcrypt.hash(signUpDto.password, salt)
-        return this.userService.create({
+        const user = await this.userService.create({
             username: signUpDto.username,
             password: hash,
             personal: {
                 create: {},
             },
         })
+        return this.login(user)
     }
 }
