@@ -3,7 +3,7 @@ import { PositionController } from './position.controller'
 import { PositionService } from './position.service'
 
 @Module({
-    controllers: [PositionController],
-    providers: [PositionService],
+  controllers: [PositionController],
+  providers: [PositionService],
 })
 export class PositionModule {}

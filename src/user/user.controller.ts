@@ -1,18 +1,18 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    FileTypeValidator,
-    Get,
-    MaxFileSizeValidator,
-    Param,
-    ParseFilePipe,
-    Patch,
-    Post,
-    Query,
-    Request,
-    UploadedFile,
-    UseInterceptors,
+  Body,
+  Controller,
+  Delete,
+  FileTypeValidator,
+  Get,
+  MaxFileSizeValidator,
+  Param,
+  ParseFilePipe,
+  Patch,
+  Post,
+  Query,
+  Request,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common'
 import { FileInterceptor } from '@nestjs/platform-express'
 import { diskStorage } from 'multer'
@@ -30,139 +30,134 @@ import { UserService } from './user.service'
 @UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('users')
 export class UserController {
-    constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
-    @Post('me/avatar')
-    @UseInterceptors(
-        FileInterceptor('photo', {
-            storage: diskStorage({
-                destination: 'uploads/avatars',
-                filename(_req, file, callback) {
-                    callback(
-                        null,
-                        Buffer.from(file.originalname, 'latin1').toString(
-                            'utf8',
-                        ),
-                    )
-                },
-            }),
-        }),
+  @Post('me/avatar')
+  @UseInterceptors(
+    FileInterceptor('photo', {
+      storage: diskStorage({
+        destination: 'uploads/avatars',
+        filename(_req, file, callback) {
+          callback(
+            null,
+            Buffer.from(file.originalname, 'latin1').toString('utf8'),
+          )
+        },
+      }),
+    }),
+  )
+  uploadAvt(
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 1000000 }),
+          new FileTypeValidator({
+            fileType: /(jpeg|jpg|png)$/i,
+          }),
+        ],
+      }),
     )
-    uploadAvt(
-        @UploadedFile(
-            new ParseFilePipe({
-                validators: [
-                    new MaxFileSizeValidator({ maxSize: 1000000 }),
-                    new FileTypeValidator({
-                        fileType: /(jpeg|jpg|png)$/i,
-                    }),
-                ],
-            }),
-        )
-        file: Express.Multer.File,
-        @Request() req,
-    ) {
-        return this.userService.update({
-            where: {
-                id: +req.user.userId,
-            },
-            data: {
-                personal: {
-                    update: {
-                        image: file.path,
-                    },
-                },
-            },
-        })
-    }
+    file: Express.Multer.File,
+    @Request() req,
+  ) {
+    return this.userService.update({
+      where: {
+        id: +req.user.userId,
+      },
+      data: {
+        personal: {
+          update: {
+            image: file.path,
+          },
+        },
+      },
+    })
+  }
 
-    @Post()
-    create(@Body() createUserDto: CreateUserDto) {
-        return this.userService.create(createUserDto)
-    }
+  @Post()
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.userService.create(createUserDto)
+  }
 
-    @Get()
-    findAll(@Query() findUserDto: FindUserDto) {
-        return this.userService.findAll(findUserDto)
-    }
+  @Get()
+  findAll(@Query() findUserDto: FindUserDto) {
+    return this.userService.findAll(findUserDto)
+  }
 
-    @Get('me')
-    currentUser(@Request() req) {
-        return this.userService.findUniq({ id: +req.user.userId })
-    }
+  @Get('me')
+  currentUser(@Request() req) {
+    return this.userService.findUniq({ id: +req.user.userId })
+  }
 
-    @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.userService.findUniq({ id: +id })
-    }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.userService.findUniq({ id: +id })
+  }
 
-    @Patch('status')
-    updateUsers(@Body() updateUserStatusDto: UpdateUserStatusDto) {
-        return this.userService.updateUserStatus({
-            where: {
-                id: {
-                    in: updateUserStatusDto.userIds,
-                },
-            },
-            data: {
-                status: updateUserStatusDto.status,
-            },
-        })
-    }
+  @Patch('status')
+  updateUsers(@Body() updateUserStatusDto: UpdateUserStatusDto) {
+    return this.userService.updateUserStatus({
+      where: {
+        id: {
+          in: updateUserStatusDto.userIds,
+        },
+      },
+      data: {
+        status: updateUserStatusDto.status,
+      },
+    })
+  }
 
-    @Patch('me/password')
-    changePassword(
-        @Body() changePasswordDto: ChangePasswordDto,
-        @Request() req,
-    ) {
-        return this.userService.changePassword({
-            where: {
-                id: +req.user.userId,
-            },
-            data: changePasswordDto,
-        })
-    }
+  @Patch('me/password')
+  changePassword(@Body() changePasswordDto: ChangePasswordDto, @Request() req) {
+    return this.userService.changePassword({
+      where: {
+        id: +req.user.userId,
+      },
+      data: changePasswordDto,
+    })
+  }
 
-    @Patch('profile')
-    updateProfile(
-        @Request() req,
-        @Body() updateMyProfileDto: UpdateMyProfileDto,
-    ) {
-        const date = new Date(updateMyProfileDto.birthday)
-        const form = { ...updateMyProfileDto, birthday: date }
-        return this.userService.update({
-            where: {
-                id: +req.user.userId,
-            },
-            data: {
-                personal: {
-                    update: form,
-                },
-            },
-        })
-    }
+  @Patch('profile')
+  updateProfile(
+    @Request() req,
+    @Body() updateMyProfileDto: UpdateMyProfileDto,
+  ) {
+    const date = new Date(updateMyProfileDto.birthday)
+    const form = { ...updateMyProfileDto, birthday: date }
+    return this.userService.update({
+      where: {
+        id: +req.user.userId,
+      },
+      data: {
+        personal: {
+          update: form,
+        },
+      },
+    })
+  }
 
-    @Patch(':id')
-    update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-        return this.userService.update({
-            where: {
-                id: +id,
-            },
-            data: updateUserDto,
-        })
-    }
+  @Patch(':id')
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.update({
+      where: {
+        id: +id,
+      },
+      data: updateUserDto,
+    })
+  }
 
-    @Delete('batch')
-    removeMany(@Body() deleteUserDto: DeleteUserDto) {
-        return this.userService.removeMany({
-            id: {
-                in: deleteUserDto.ids,
-            },
-        })
-    }
+  @Delete('batch')
+  removeMany(@Body() deleteUserDto: DeleteUserDto) {
+    return this.userService.removeMany({
+      id: {
+        in: deleteUserDto.ids,
+      },
+    })
+  }
 
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.userService.remove({ id: +id })
-    }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.userService.remove({ id: +id })
+  }
 }

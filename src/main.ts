@@ -1,3 +1,4 @@
+import { ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { HttpAdapterHost, NestFactory } from '@nestjs/core'
 import { static as static_ } from 'express'
@@ -9,21 +10,22 @@ import { AppModule } from './app.module'
  * @link https://github.com/prisma/studio/issues/614
  */
 declare global {
-    interface BigInt {
-        toJSON(): string
-    }
+  interface BigInt {
+    toJSON(): string
+  }
 }
 BigInt.prototype.toJSON = function (): string {
-    return this.toString()
+  return this.toString()
 }
 
 async function bootstrap() {
-    const app = await NestFactory.create(AppModule)
-    app.use('/uploads', static_('uploads'))
-    app.enableCors()
-    const { httpAdapter } = app.get(HttpAdapterHost)
-    app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter))
-    const confService = app.get(ConfigService)
-    await app.listen(confService.get<number>('PORT', 3000))
+  const app = await NestFactory.create(AppModule)
+  app.use('/uploads', static_('uploads'))
+  app.enableCors()
+  const { httpAdapter } = app.get(HttpAdapterHost)
+  app.useGlobalPipes(new ValidationPipe())
+  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter))
+  const confService = app.get(ConfigService)
+  await app.listen(confService.get<number>('PORT', 3000))
 }
 bootstrap()

@@ -1,3 +1,3 @@
 export class DeleteCompanyDto {
-    ids: number[]
+  ids: number[]
 }

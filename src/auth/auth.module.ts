@@ -12,29 +12,29 @@ import { JwtStrategy } from './jwt.strategy'
 import { LocalStrategy } from './local.strategy'
 
 @Module({
-    imports: [
-        UserModule,
-        PassportModule,
-        JwtModule.registerAsync({
-            useFactory(configService: ConfigService) {
-                return {
-                    secret: configService.getOrThrow('JWT_SECRET'),
-                    signOptions: { expiresIn: '3600s' },
-                }
-            },
-            inject: [ConfigService],
-        }),
-        CacheModule.register(),
-    ],
-    controllers: [AuthController],
-    providers: [
-        AuthService,
-        LocalStrategy,
-        JwtStrategy,
-        {
-            provide: APP_GUARD,
-            useClass: JwtAuthGuard,
-        },
-    ],
+  imports: [
+    UserModule,
+    PassportModule,
+    JwtModule.registerAsync({
+      useFactory(configService: ConfigService) {
+        return {
+          secret: configService.getOrThrow('JWT_SECRET'),
+          signOptions: { expiresIn: '3600s' },
+        }
+      },
+      inject: [ConfigService],
+    }),
+    CacheModule.register(),
+  ],
+  controllers: [AuthController],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AuthModule {}

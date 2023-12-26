@@ -1,3 +1,3 @@
 export class DeleteGroupDto {
-    ids: number[]
+  ids: number[]
 }

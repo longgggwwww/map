@@ -7,14 +7,14 @@ import { RoleService } from './role.service'
 import { RolesGuard } from './roles.guard'
 
 @Module({
-    imports: [ConfigModule, JwtModule],
-    controllers: [RoleController],
-    providers: [
-        RoleService,
-        {
-            provide: APP_GUARD,
-            useClass: RolesGuard,
-        },
-    ],
+  imports: [ConfigModule, JwtModule],
+  controllers: [RoleController],
+  providers: [
+    RoleService,
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class RoleModule {}

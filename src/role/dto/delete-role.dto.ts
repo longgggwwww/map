@@ -1,3 +1,3 @@
 export class DeleteRoleDto {
-    ids: number[]
+  ids: number[]
 }

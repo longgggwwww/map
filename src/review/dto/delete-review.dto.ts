@@ -1,3 +1,3 @@
 export class DeleteReviewDto {
-    ids: number[]
+  ids: number[]
 }

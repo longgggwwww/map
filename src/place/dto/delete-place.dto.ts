@@ -1,3 +1,3 @@
 export class DeletePlaceDto {
-    ids: number[]
+  ids: number[]
 }

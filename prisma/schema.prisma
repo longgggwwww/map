@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 datasource db {
@@ -170,9 +171,10 @@ model Category {
 }
 
 model Place {
-  id          Int        @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   name        String
-  category    Category[]
+  category    Category? @relation(fields: [categoryId], references: [id])
+  categoryId  Int?
   photos      String[]
   address     String?
   description String?
@@ -181,12 +183,12 @@ model Place {
   website     String?
   lng         Float
   lat         Float
-  status      Int        @default(0)
-  createdBy   User?      @relation(fields: [createdById], references: [id])
+  status      Int       @default(0)
+  createdBy   User?     @relation(fields: [createdById], references: [id])
   createdById Int?
   reviews     Review[]
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Review {

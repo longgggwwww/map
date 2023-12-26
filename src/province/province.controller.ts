@@ -1,13 +1,13 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    Param,
-    Patch,
-    Post,
-    Query,
-    UseInterceptors,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseInterceptors,
 } from '@nestjs/common'
 import { PrismaService } from 'nestjs-prisma'
 import { LoggingInterceptor } from 'src/logging/logging.interceptor'
@@ -20,45 +20,45 @@ import { ProvinceService } from './province.service'
 @UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('provinces')
 export class ProvinceController {
-    constructor(private readonly provinceService: ProvinceService) {}
+  constructor(private readonly provinceService: ProvinceService) {}
 
-    @Post()
-    create(@Body() createProvinceDto: CreateProvinceDto) {
-        return this.provinceService.create(createProvinceDto)
-    }
+  @Post()
+  create(@Body() createProvinceDto: CreateProvinceDto) {
+    return this.provinceService.create(createProvinceDto)
+  }
 
-    @Get()
-    findAll(@Query() findProvinceDto: FindProvinceDto) {
-        return this.provinceService.findAll(findProvinceDto)
-    }
+  @Get()
+  findAll(@Query() findProvinceDto: FindProvinceDto) {
+    return this.provinceService.findAll(findProvinceDto)
+  }
 
-    @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.provinceService.findUniq({ id: +id })
-    }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.provinceService.findUniq({ id: +id })
+  }
 
-    @Patch(':id')
-    update(
-        @Param('id') id: string,
-        @Body() updateProvinceDto: UpdateProvinceDto,
-    ) {
-        return this.provinceService.update({
-            where: { id: +id },
-            data: updateProvinceDto,
-        })
-    }
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateProvinceDto: UpdateProvinceDto,
+  ) {
+    return this.provinceService.update({
+      where: { id: +id },
+      data: updateProvinceDto,
+    })
+  }
 
-    @Delete('batch')
-    removeMany(@Body() deleteProvinceDto: DeleteProvinceDto) {
-        return this.provinceService.removeMany({
-            id: {
-                in: deleteProvinceDto.ids,
-            },
-        })
-    }
+  @Delete('batch')
+  removeMany(@Body() deleteProvinceDto: DeleteProvinceDto) {
+    return this.provinceService.removeMany({
+      id: {
+        in: deleteProvinceDto.ids,
+      },
+    })
+  }
 
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.provinceService.remove({ id: +id })
-    }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.provinceService.remove({ id: +id })
+  }
 }

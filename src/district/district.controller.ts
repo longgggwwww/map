@@ -1,13 +1,13 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    Param,
-    Patch,
-    Post,
-    Query,
-    UseInterceptors,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseInterceptors,
 } from '@nestjs/common'
 import { PrismaService } from 'nestjs-prisma'
 import { LoggingInterceptor } from 'src/logging/logging.interceptor'
@@ -20,45 +20,45 @@ import { UpdateDistrictDto } from './dto/update-district.dto'
 @UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('districts')
 export class DistrictController {
-    constructor(private readonly districtService: DistrictService) {}
+  constructor(private readonly districtService: DistrictService) {}
 
-    @Post()
-    create(@Body() createDistrictDto: CreateDistrictDto) {
-        return this.districtService.create(createDistrictDto)
-    }
+  @Post()
+  create(@Body() createDistrictDto: CreateDistrictDto) {
+    return this.districtService.create(createDistrictDto)
+  }
 
-    @Get()
-    findAll(@Query() findDistrictDto: FindDistrictDto) {
-        return this.districtService.findAll(findDistrictDto)
-    }
+  @Get()
+  findAll(@Query() findDistrictDto: FindDistrictDto) {
+    return this.districtService.findAll(findDistrictDto)
+  }
 
-    @Get(':id')
-    findOne(@Param('id') id: string) {
-        return this.districtService.findUniq({ id: +id })
-    }
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.districtService.findUniq({ id: +id })
+  }
 
-    @Patch(':id')
-    update(
-        @Param('id') id: string,
-        @Body() updateDistrictDto: UpdateDistrictDto,
-    ) {
-        return this.districtService.update({
-            where: { id: +id },
-            data: updateDistrictDto,
-        })
-    }
+  @Patch(':id')
+  update(
+    @Param('id') id: string,
+    @Body() updateDistrictDto: UpdateDistrictDto,
+  ) {
+    return this.districtService.update({
+      where: { id: +id },
+      data: updateDistrictDto,
+    })
+  }
 
-    @Delete('batch')
-    removeMany(@Body() deleteDistrictDto: DeleteDistrictDto) {
-        return this.districtService.removeMany({
-            id: {
-                in: deleteDistrictDto.ids,
-            },
-        })
-    }
+  @Delete('batch')
+  removeMany(@Body() deleteDistrictDto: DeleteDistrictDto) {
+    return this.districtService.removeMany({
+      id: {
+        in: deleteDistrictDto.ids,
+      },
+    })
+  }
 
-    @Delete(':id')
-    remove(@Param('id') id: string) {
-        return this.districtService.remove({ id: +id })
-    }
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.districtService.remove({ id: +id })
+  }
 }
