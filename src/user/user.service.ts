@@ -1,8 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
-import * as bcrypt from 'bcrypt'
-import { PrismaService } from 'nestjs-prisma'
-import { ChangePasswordDto } from './dto/change-pass-user.dto'
+import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
+import { PrismaService } from 'nestjs-prisma';
+import { ChangePasswordDto } from './dto/change-pass-user.dto';
 
 @Injectable()
 export class UserService {
@@ -37,17 +37,17 @@ export class UserService {
         createdPermissions: true,
         log: true,
       },
-    })
+    });
   }
 
   async findAll(params: {
-    skip?: number
-    take?: number
-    cursor?: Prisma.UserWhereUniqueInput
-    where?: Prisma.UserWhereInput
-    orderBy?: Prisma.UserOrderByWithRelationAndSearchRelevanceInput
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.UserWhereUniqueInput;
+    where?: Prisma.UserWhereInput;
+    orderBy?: Prisma.UserOrderByWithRelationAndSearchRelevanceInput;
   }) {
-    const { skip, take, cursor, where, orderBy } = params
+    const { skip, take, cursor, where, orderBy } = params;
     return this.prisma.user.findMany({
       skip,
       take,
@@ -80,7 +80,7 @@ export class UserService {
         createdPermissions: true,
         log: true,
       },
-    })
+    });
   }
 
   async findUniq(where: Prisma.UserWhereUniqueInput) {
@@ -112,15 +112,15 @@ export class UserService {
         createdPermissions: true,
         log: true,
       },
-    })
+    });
   }
 
   async update(params: {
-    where: Prisma.UserWhereUniqueInput
-    data: Prisma.UserUpdateInput
+    where: Prisma.UserWhereUniqueInput;
+    data: Prisma.UserUpdateInput;
   }) {
-    const { where, data } = params
-    const { password, ...rest } = data
+    const { where, data } = params;
+    const { password, ...rest } = data;
     return this.prisma.user.update({
       data: rest,
       where,
@@ -150,13 +150,13 @@ export class UserService {
         createdPermissions: true,
         log: true,
       },
-    })
+    });
   }
 
   async removeMany(where: Prisma.UserWhereInput) {
     return this.prisma.user.deleteMany({
       where,
-    })
+    });
   }
 
   async remove(where: Prisma.UserWhereUniqueInput) {
@@ -188,36 +188,36 @@ export class UserService {
         createdPermissions: true,
         log: true,
       },
-    })
+    });
   }
 
   async updateUserStatus(params: {
-    where: Prisma.UserWhereInput
+    where: Prisma.UserWhereInput;
     data: {
-      status: boolean
-    }
+      status: boolean;
+    };
   }) {
-    const { where, data } = params
+    const { where, data } = params;
     return this.prisma.user.updateMany({
       data: {
         isActive: data.status,
       },
       where,
-    })
+    });
   }
 
   async changePassword(params: {
-    where: Prisma.UserWhereUniqueInput
-    data: ChangePasswordDto
+    where: Prisma.UserWhereUniqueInput;
+    data: ChangePasswordDto;
   }) {
-    const { where, data } = params
-    const user = await this.prisma.user.findUniqueOrThrow({ where })
-    const isMatch = await bcrypt.compare(data.password, user.password)
+    const { where, data } = params;
+    const user = await this.prisma.user.findUniqueOrThrow({ where });
+    const isMatch = await bcrypt.compare(data.password, user.password);
     if (!isMatch) {
-      throw new UnauthorizedException()
+      throw new UnauthorizedException();
     }
-    const salt = await bcrypt.genSalt(10)
-    const hash = await bcrypt.hash(data.newPassword, salt)
+    const salt = await bcrypt.genSalt(10);
+    const hash = await bcrypt.hash(data.newPassword, salt);
     return this.prisma.user.update({
       where,
       data: {
@@ -249,6 +249,6 @@ export class UserService {
         createdPermissions: true,
         log: true,
       },
-    })
+    });
   }
 }

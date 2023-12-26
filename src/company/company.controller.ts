@@ -8,14 +8,14 @@ import {
   Post,
   Query,
   UseInterceptors,
-} from '@nestjs/common'
-import { PrismaService } from 'nestjs-prisma'
-import { LoggingInterceptor } from 'src/logging/logging.interceptor'
-import { CompanyService } from './company.service'
-import { CreateCompanyDto } from './dto/create-company.dto'
-import { DeleteCompanyDto } from './dto/delete-company.dto'
-import { FindCompanyDto } from './dto/find-company.dto'
-import { UpdateCompanyDto } from './dto/update-company.dto'
+} from '@nestjs/common';
+import { PrismaService } from 'nestjs-prisma';
+import { LoggingInterceptor } from 'src/logging/logging.interceptor';
+import { CompanyService } from './company.service';
+import { CreateCompanyDto } from './dto/create-company.dto';
+import { DeleteCompanyDto } from './dto/delete-company.dto';
+import { FindCompanyDto } from './dto/find-company.dto';
+import { UpdateCompanyDto } from './dto/update-company.dto';
 
 @UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('companies')
@@ -24,17 +24,17 @@ export class CompanyController {
 
   @Post()
   create(@Body() createCompanyDto: CreateCompanyDto) {
-    return this.companyService.create(createCompanyDto)
+    return this.companyService.create(createCompanyDto);
   }
 
   @Get()
   findAll(@Query() findCompanyDto: FindCompanyDto) {
-    return this.companyService.findAll(findCompanyDto)
+    return this.companyService.findAll(findCompanyDto);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.companyService.findUniq({ id: +id })
+    return this.companyService.findUniq({ id: +id });
   }
 
   @Patch(':id')
@@ -42,7 +42,7 @@ export class CompanyController {
     return this.companyService.update({
       where: { id: +id },
       data: updateCompanyDto,
-    })
+    });
   }
 
   @Delete('batch')
@@ -51,11 +51,11 @@ export class CompanyController {
       id: {
         in: deleteCompanyDto.ids,
       },
-    })
+    });
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.companyService.remove({ id: +id })
+    return this.companyService.remove({ id: +id });
   }
 }

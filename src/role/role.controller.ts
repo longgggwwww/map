@@ -8,14 +8,14 @@ import {
   Post,
   Query,
   UseInterceptors,
-} from '@nestjs/common'
-import { PrismaService } from 'nestjs-prisma'
-import { LoggingInterceptor } from 'src/logging/logging.interceptor'
-import { CreateRoleDto } from './dto/create-role.dto'
-import { DeleteRoleDto } from './dto/delete-role.dto'
-import { FindRoleDto } from './dto/find-role.dto'
-import { UpdateRoleDto } from './dto/update-role.dto'
-import { RoleService } from './role.service'
+} from '@nestjs/common';
+import { PrismaService } from 'nestjs-prisma';
+import { LoggingInterceptor } from 'src/logging/logging.interceptor';
+import { CreateRoleDto } from './dto/create-role.dto';
+import { DeleteRoleDto } from './dto/delete-role.dto';
+import { FindRoleDto } from './dto/find-role.dto';
+import { UpdateRoleDto } from './dto/update-role.dto';
+import { RoleService } from './role.service';
 
 @UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('roles')
@@ -24,17 +24,17 @@ export class RoleController {
 
   @Post()
   create(@Body() createRoleDto: CreateRoleDto) {
-    return this.roleService.create(createRoleDto)
+    return this.roleService.create(createRoleDto);
   }
 
   @Get()
   findAll(@Query() findRoleDto: FindRoleDto) {
-    return this.roleService.findAll(findRoleDto)
+    return this.roleService.findAll(findRoleDto);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.roleService.findUniq({ id: +id })
+    return this.roleService.findUniq({ id: +id });
   }
 
   @Patch(':id')
@@ -42,7 +42,7 @@ export class RoleController {
     return this.roleService.update({
       where: { id: +id },
       data: updateRoleDto,
-    })
+    });
   }
 
   @Delete('batch')
@@ -51,11 +51,11 @@ export class RoleController {
       id: {
         in: deleteRoleDto.ids,
       },
-    })
+    });
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.roleService.remove({ id: +id })
+    return this.roleService.remove({ id: +id });
   }
 }

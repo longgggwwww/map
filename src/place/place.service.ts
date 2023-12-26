@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
-import { PrismaService } from 'nestjs-prisma'
+import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from 'nestjs-prisma';
 
 @Injectable()
 export class PlaceService {
@@ -18,17 +18,17 @@ export class PlaceService {
           },
         },
       },
-    })
+    });
   }
 
   async findAll(params: {
-    skip?: number
-    take?: number
-    cursor?: Prisma.PlaceWhereUniqueInput
-    where?: Prisma.PlaceWhereInput
-    orderBy?: Prisma.PlaceOrderByWithRelationAndSearchRelevanceInput
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.PlaceWhereUniqueInput;
+    where?: Prisma.PlaceWhereInput;
+    orderBy?: Prisma.PlaceOrderByWithRelationAndSearchRelevanceInput;
   }) {
-    const { skip, take, cursor, where, orderBy } = params
+    const { skip, take, cursor, where, orderBy } = params;
     return this.prisma.place.findMany({
       skip,
       take,
@@ -44,7 +44,7 @@ export class PlaceService {
           },
         },
       },
-    })
+    });
   }
 
   async findUniq(where: Prisma.PlaceWhereUniqueInput) {
@@ -59,14 +59,14 @@ export class PlaceService {
           },
         },
       },
-    })
+    });
   }
 
   async update(params: {
-    where: Prisma.PlaceWhereUniqueInput
-    data: Prisma.PlaceUpdateInput
+    where: Prisma.PlaceWhereUniqueInput;
+    data: Prisma.PlaceUpdateInput;
   }) {
-    const { where, data } = params
+    const { where, data } = params;
     return this.prisma.place.update({
       data,
       where,
@@ -79,13 +79,13 @@ export class PlaceService {
           },
         },
       },
-    })
+    });
   }
 
   async removeMany(where: Prisma.PlaceWhereInput) {
     return this.prisma.place.deleteMany({
       where,
-    })
+    });
   }
 
   async remove(where: Prisma.PlaceWhereUniqueInput) {
@@ -100,41 +100,29 @@ export class PlaceService {
           },
         },
       },
-    })
+    });
   }
 
-  async review(params: {
-    where: Prisma.PlaceWhereUniqueInput
-    status: number
-  }) {
-    const { where, status } = params
-    return this.prisma.place.update({
+  async review(params: { where: Prisma.PlaceWhereInput; status: number }) {
+    const { where, status } = params;
+    return this.prisma.place.updateMany({
+      where,
       data: {
         status,
       },
-      where,
-      include: {
-        category: true,
-        createdBy: true,
-        reviews: {
-          include: {
-            user: true,
-          },
-        },
-      },
-    })
+    });
   }
 
   async search(
     str: string,
     params: {
-      skip?: number
-      take?: number
-      cursor?: Prisma.PlaceWhereUniqueInput
-      orderBy?: Prisma.PlaceOrderByWithRelationAndSearchRelevanceInput
+      skip?: number;
+      take?: number;
+      cursor?: Prisma.PlaceWhereUniqueInput;
+      orderBy?: Prisma.PlaceOrderByWithRelationAndSearchRelevanceInput;
     },
   ) {
-    const { skip, take, cursor, orderBy } = params
+    const { skip, take, cursor, orderBy } = params;
     return this.prisma.place.findMany({
       where: {
         OR: [
@@ -173,6 +161,6 @@ export class PlaceService {
           },
         },
       },
-    })
+    });
   }
 }

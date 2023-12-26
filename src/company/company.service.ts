@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
-import { PrismaService } from 'nestjs-prisma'
+import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from 'nestjs-prisma';
 
 @Injectable()
 export class CompanyService {
@@ -16,17 +16,17 @@ export class CompanyService {
           },
         },
       },
-    })
+    });
   }
 
   async findAll(params: {
-    skip?: number
-    take?: number
-    cursor?: Prisma.CompanyWhereUniqueInput
-    where?: Prisma.CompanyWhereInput
-    orderBy?: Prisma.CompanyOrderByWithRelationAndSearchRelevanceInput
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.CompanyWhereUniqueInput;
+    where?: Prisma.CompanyWhereInput;
+    orderBy?: Prisma.CompanyOrderByWithRelationAndSearchRelevanceInput;
   }) {
-    const { skip, take, cursor, where, orderBy } = params
+    const { skip, take, cursor, where, orderBy } = params;
     return this.prisma.company.findMany({
       skip,
       take,
@@ -40,7 +40,7 @@ export class CompanyService {
           },
         },
       },
-    })
+    });
   }
 
   async findUniq(where: Prisma.CompanyWhereUniqueInput) {
@@ -53,14 +53,14 @@ export class CompanyService {
           },
         },
       },
-    })
+    });
   }
 
   async update(params: {
-    where: Prisma.CompanyWhereUniqueInput
-    data: Prisma.CompanyUpdateInput
+    where: Prisma.CompanyWhereUniqueInput;
+    data: Prisma.CompanyUpdateInput;
   }) {
-    const { where, data } = params
+    const { where, data } = params;
     return this.prisma.company.update({
       data,
       where,
@@ -71,13 +71,13 @@ export class CompanyService {
           },
         },
       },
-    })
+    });
   }
 
   async removeMany(where: Prisma.CompanyWhereInput) {
     return this.prisma.company.deleteMany({
       where,
-    })
+    });
   }
 
   async remove(where: Prisma.CompanyWhereUniqueInput) {
@@ -90,6 +90,6 @@ export class CompanyService {
           },
         },
       },
-    })
+    });
   }
 }

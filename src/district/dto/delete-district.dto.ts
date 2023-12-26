@@ -1,3 +1,3 @@
 export class DeleteDistrictDto {
-  ids: number[]
+  ids: number[];
 }

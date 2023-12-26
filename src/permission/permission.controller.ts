@@ -8,14 +8,14 @@ import {
   Post,
   Query,
   UseInterceptors,
-} from '@nestjs/common'
-import { PrismaService } from 'nestjs-prisma'
-import { LoggingInterceptor } from 'src/logging/logging.interceptor'
-import { CreatePermissionDto } from './dto/create-permission.dto'
-import { DeletePermissionDto } from './dto/delete-permission.dto'
-import { FindPermissionDto } from './dto/find-permission.dto'
-import { UpdatePermissionDto } from './dto/update-permission.dto'
-import { PermissionService } from './permission.service'
+} from '@nestjs/common';
+import { PrismaService } from 'nestjs-prisma';
+import { LoggingInterceptor } from 'src/logging/logging.interceptor';
+import { CreatePermissionDto } from './dto/create-permission.dto';
+import { DeletePermissionDto } from './dto/delete-permission.dto';
+import { FindPermissionDto } from './dto/find-permission.dto';
+import { UpdatePermissionDto } from './dto/update-permission.dto';
+import { PermissionService } from './permission.service';
 
 @UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('permissions')
@@ -24,17 +24,17 @@ export class PermissionController {
 
   @Post()
   create(@Body() createPermissionDto: CreatePermissionDto) {
-    return this.permissionService.create(createPermissionDto)
+    return this.permissionService.create(createPermissionDto);
   }
 
   @Get()
   findAll(@Query() findPermissionDto: FindPermissionDto) {
-    return this.permissionService.findAll(findPermissionDto)
+    return this.permissionService.findAll(findPermissionDto);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.permissionService.findUniq({ id: +id })
+    return this.permissionService.findUniq({ id: +id });
   }
 
   @Patch(':id')
@@ -45,7 +45,7 @@ export class PermissionController {
     return this.permissionService.update({
       where: { id: +id },
       data: updatePermissionDto,
-    })
+    });
   }
 
   @Delete('batch')
@@ -54,11 +54,11 @@ export class PermissionController {
       id: {
         in: deletePermissionDto.ids,
       },
-    })
+    });
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.permissionService.remove({ id: +id })
+    return this.permissionService.remove({ id: +id });
   }
 }

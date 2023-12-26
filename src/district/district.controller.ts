@@ -8,14 +8,14 @@ import {
   Post,
   Query,
   UseInterceptors,
-} from '@nestjs/common'
-import { PrismaService } from 'nestjs-prisma'
-import { LoggingInterceptor } from 'src/logging/logging.interceptor'
-import { DistrictService } from './district.service'
-import { CreateDistrictDto } from './dto/create-district.dto'
-import { DeleteDistrictDto } from './dto/delete-district.dto'
-import { FindDistrictDto } from './dto/find-district.dto'
-import { UpdateDistrictDto } from './dto/update-district.dto'
+} from '@nestjs/common';
+import { PrismaService } from 'nestjs-prisma';
+import { LoggingInterceptor } from 'src/logging/logging.interceptor';
+import { DistrictService } from './district.service';
+import { CreateDistrictDto } from './dto/create-district.dto';
+import { DeleteDistrictDto } from './dto/delete-district.dto';
+import { FindDistrictDto } from './dto/find-district.dto';
+import { UpdateDistrictDto } from './dto/update-district.dto';
 
 @UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('districts')
@@ -24,17 +24,17 @@ export class DistrictController {
 
   @Post()
   create(@Body() createDistrictDto: CreateDistrictDto) {
-    return this.districtService.create(createDistrictDto)
+    return this.districtService.create(createDistrictDto);
   }
 
   @Get()
   findAll(@Query() findDistrictDto: FindDistrictDto) {
-    return this.districtService.findAll(findDistrictDto)
+    return this.districtService.findAll(findDistrictDto);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.districtService.findUniq({ id: +id })
+    return this.districtService.findUniq({ id: +id });
   }
 
   @Patch(':id')
@@ -45,7 +45,7 @@ export class DistrictController {
     return this.districtService.update({
       where: { id: +id },
       data: updateDistrictDto,
-    })
+    });
   }
 
   @Delete('batch')
@@ -54,11 +54,11 @@ export class DistrictController {
       id: {
         in: deleteDistrictDto.ids,
       },
-    })
+    });
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.districtService.remove({ id: +id })
+    return this.districtService.remove({ id: +id });
   }
 }

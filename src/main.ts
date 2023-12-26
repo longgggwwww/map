@@ -1,9 +1,9 @@
-import { ValidationPipe } from '@nestjs/common'
-import { ConfigService } from '@nestjs/config'
-import { HttpAdapterHost, NestFactory } from '@nestjs/core'
-import { static as static_ } from 'express'
-import { PrismaClientExceptionFilter } from 'nestjs-prisma'
-import { AppModule } from './app.module'
+import { ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { static as static_ } from 'express';
+import { PrismaClientExceptionFilter } from 'nestjs-prisma';
+import { AppModule } from './app.module';
 
 /**
  * Fix BigInt Prisma Error
@@ -11,21 +11,20 @@ import { AppModule } from './app.module'
  */
 declare global {
   interface BigInt {
-    toJSON(): string
+    toJSON(): string;
   }
 }
 BigInt.prototype.toJSON = function (): string {
-  return this.toString()
-}
+  return this.toString();
+};
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule)
-  app.use('/uploads', static_('uploads'))
-  app.enableCors()
-  const { httpAdapter } = app.get(HttpAdapterHost)
-  app.useGlobalPipes(new ValidationPipe())
-  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter))
-  const confService = app.get(ConfigService)
-  await app.listen(confService.get<number>('PORT', 3000))
+  const app = await NestFactory.create(AppModule);
+  app.use('/uploads', static_('uploads'));
+  app.enableCors();
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
+  await app.listen(app.get(ConfigService).get<number>('PORT', 3000));
 }
-bootstrap()
+bootstrap();

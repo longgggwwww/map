@@ -1,3 +1,3 @@
 export class DeletePositionDto {
-  ids: number[]
+  ids: number[];
 }

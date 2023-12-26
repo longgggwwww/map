@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
-import { PrismaService } from 'nestjs-prisma'
+import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from 'nestjs-prisma';
 
 @Injectable()
 export class DepartmentService {
@@ -13,17 +13,17 @@ export class DepartmentService {
         company: true,
         positions: true,
       },
-    })
+    });
   }
 
   async findAll(params: {
-    skip?: number
-    take?: number
-    cursor?: Prisma.DepartmentWhereUniqueInput
-    where?: Prisma.DepartmentWhereInput
-    orderBy?: Prisma.DepartmentOrderByWithRelationAndSearchRelevanceInput
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.DepartmentWhereUniqueInput;
+    where?: Prisma.DepartmentWhereInput;
+    orderBy?: Prisma.DepartmentOrderByWithRelationAndSearchRelevanceInput;
   }) {
-    const { skip, take, cursor, where, orderBy } = params
+    const { skip, take, cursor, where, orderBy } = params;
     return this.prisma.department.findMany({
       skip,
       take,
@@ -34,7 +34,7 @@ export class DepartmentService {
         company: true,
         positions: true,
       },
-    })
+    });
   }
 
   async findUniq(where: Prisma.DepartmentWhereUniqueInput) {
@@ -44,14 +44,14 @@ export class DepartmentService {
         company: true,
         positions: true,
       },
-    })
+    });
   }
 
   async update(params: {
-    where: Prisma.DepartmentWhereUniqueInput
-    data: Prisma.DepartmentUpdateInput
+    where: Prisma.DepartmentWhereUniqueInput;
+    data: Prisma.DepartmentUpdateInput;
   }) {
-    const { where, data } = params
+    const { where, data } = params;
     return this.prisma.department.update({
       data,
       where,
@@ -59,13 +59,13 @@ export class DepartmentService {
         company: true,
         positions: true,
       },
-    })
+    });
   }
 
   async removeMany(where: Prisma.DepartmentWhereInput) {
     return this.prisma.department.deleteMany({
       where,
-    })
+    });
   }
 
   async remove(where: Prisma.DepartmentWhereUniqueInput) {
@@ -75,6 +75,6 @@ export class DepartmentService {
         company: true,
         positions: true,
       },
-    })
+    });
   }
 }

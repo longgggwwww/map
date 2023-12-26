@@ -8,14 +8,14 @@ import {
   Post,
   Query,
   UseInterceptors,
-} from '@nestjs/common'
-import { PrismaService } from 'nestjs-prisma'
-import { LoggingInterceptor } from 'src/logging/logging.interceptor'
-import { CategoryService } from './category.service'
-import { CreateCategoryDto } from './dto/create-category.dto'
-import { DeleteCategoryDto } from './dto/delete-category.dto'
-import { FindCategoryDto } from './dto/find-category.dto'
-import { UpdateCategoryDto } from './dto/update-category.dto'
+} from '@nestjs/common';
+import { PrismaService } from 'nestjs-prisma';
+import { LoggingInterceptor } from 'src/logging/logging.interceptor';
+import { CategoryService } from './category.service';
+import { CreateCategoryDto } from './dto/create-category.dto';
+import { DeleteCategoryDto } from './dto/delete-category.dto';
+import { FindCategoryDto } from './dto/find-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('categories')
@@ -24,17 +24,17 @@ export class CategoryController {
 
   @Post()
   create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.categoryService.create(createCategoryDto)
+    return this.categoryService.create(createCategoryDto);
   }
 
   @Get()
   findAll(@Query() findCategoryDto: FindCategoryDto) {
-    return this.categoryService.findAll(findCategoryDto)
+    return this.categoryService.findAll(findCategoryDto);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.categoryService.findUniq({ id: +id })
+    return this.categoryService.findUniq({ id: +id });
   }
 
   @Patch(':id')
@@ -45,7 +45,7 @@ export class CategoryController {
     return this.categoryService.update({
       where: { id: +id },
       data: updateCategoryDto,
-    })
+    });
   }
 
   @Delete('batch')
@@ -54,11 +54,11 @@ export class CategoryController {
       id: {
         in: deleteCategoryDto.ids,
       },
-    })
+    });
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.categoryService.remove({ id: +id })
+    return this.categoryService.remove({ id: +id });
   }
 }

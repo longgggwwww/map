@@ -1,9 +1,9 @@
-import { Prisma } from '@prisma/client'
+import { Prisma } from '@prisma/client';
 
 export class FindCategoryDto {
-  skip?: number
-  take?: number
-  cursor?: Prisma.CategoryWhereUniqueInput
-  where?: Prisma.CategoryWhereInput
-  orderBy?: Prisma.CategoryOrderByWithRelationAndSearchRelevanceInput
+  skip?: number;
+  take?: number;
+  cursor?: Prisma.CategoryWhereUniqueInput;
+  where?: Prisma.CategoryWhereInput;
+  orderBy?: Prisma.CategoryOrderByWithRelationAndSearchRelevanceInput;
 }

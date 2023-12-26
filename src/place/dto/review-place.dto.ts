@@ -1,3 +1,4 @@
 export class ReviewPlaceDto {
-  status: number
+  placeIds: number[];
+  status: number;
 }

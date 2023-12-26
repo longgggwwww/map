@@ -1,9 +1,9 @@
-import { Prisma } from '@prisma/client'
+import { Prisma } from '@prisma/client';
 
 export class FindWardDto {
-  skip?: number
-  take?: number
-  cursor?: Prisma.WardWhereUniqueInput
-  where?: Prisma.WardWhereInput
-  orderBy?: Prisma.WardOrderByWithRelationAndSearchRelevanceInput
+  skip?: number;
+  take?: number;
+  cursor?: Prisma.WardWhereUniqueInput;
+  where?: Prisma.WardWhereInput;
+  orderBy?: Prisma.WardOrderByWithRelationAndSearchRelevanceInput;
 }

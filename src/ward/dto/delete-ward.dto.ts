@@ -1,3 +1,3 @@
 export class DeleteWardDto {
-  ids: number[]
+  ids: number[];
 }

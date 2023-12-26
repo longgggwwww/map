@@ -12,22 +12,22 @@ import {
   Query,
   UploadedFiles,
   UseInterceptors,
-} from '@nestjs/common'
-import { FilesInterceptor } from '@nestjs/platform-express'
-import { diskStorage } from 'multer'
-import { PrismaService } from 'nestjs-prisma'
-import { Public } from 'src/auth/decorators/public.decorator'
-import { LoggingInterceptor } from 'src/logging/logging.interceptor'
-import { Permissions } from 'src/permission/decoratos/permission.decorator'
-import { Permission } from 'src/permission/enums/permission.enum'
-import { Roles } from 'src/role/decoratos/role.decorator'
-import { Role } from 'src/role/enums/role.enum'
-import { CreatePlaceDto } from './dto/create-place.dto'
-import { DeletePlaceDto } from './dto/delete-place.dto'
-import { FindPlaceDto } from './dto/find-place.dto'
-import { ReviewPlaceDto } from './dto/review-place.dto'
-import { UpdatePlaceDto } from './dto/update-place.dto'
-import { PlaceService } from './place.service'
+} from '@nestjs/common';
+import { FilesInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { PrismaService } from 'nestjs-prisma';
+import { Public } from 'src/auth/decorators/public.decorator';
+import { LoggingInterceptor } from 'src/logging/logging.interceptor';
+import { Permissions } from 'src/permission/decoratos/permission.decorator';
+import { Permission } from 'src/permission/enums/permission.enum';
+import { Roles } from 'src/role/decoratos/role.decorator';
+import { Role } from 'src/role/enums/role.enum';
+import { CreatePlaceDto } from './dto/create-place.dto';
+import { DeletePlaceDto } from './dto/delete-place.dto';
+import { FindPlaceDto } from './dto/find-place.dto';
+import { ReviewPlaceDto } from './dto/review-place.dto';
+import { UpdatePlaceDto } from './dto/update-place.dto';
+import { PlaceService } from './place.service';
 
 @UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('places')
@@ -43,7 +43,7 @@ export class PlaceController {
           callback(
             null,
             Buffer.from(file.originalname, 'latin1').toString('utf8'),
-          )
+          );
         },
       }),
     }),
@@ -69,18 +69,18 @@ export class PlaceController {
       data: {
         photos: files.map((file) => file.path),
       },
-    })
+    });
   }
 
   @Post()
   create(@Body() createPlaceDto: CreatePlaceDto) {
-    return this.placeService.create(createPlaceDto)
+    return this.placeService.create(createPlaceDto);
   }
 
   @Public()
   @Get()
   findAll(@Query() findPlaceDto: FindPlaceDto) {
-    return this.placeService.findAll(findPlaceDto)
+    return this.placeService.findAll(findPlaceDto);
   }
 
   @Public()
@@ -89,23 +89,27 @@ export class PlaceController {
     @Param('searchString') searchString: string,
     @Query() findPlaceDto: FindPlaceDto,
   ) {
-    return this.placeService.search(searchString, findPlaceDto)
+    return this.placeService.search(searchString, findPlaceDto);
   }
 
   @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.placeService.findUniq({ id: +id })
+    return this.placeService.findUniq({ id: +id });
   }
 
   @Roles(Role.Admin)
   @Permissions(Permission.BrowsePost)
-  @Patch('review/:id')
-  review(@Param('id') id: string, @Body() reviewPlaceDto: ReviewPlaceDto) {
-    return this.placeService.update({
-      where: { id: +id },
-      data: reviewPlaceDto,
-    })
+  @Patch('review')
+  review(@Body() reviewPlaceDto: ReviewPlaceDto) {
+    return this.placeService.review({
+      where: {
+        id: {
+          in: reviewPlaceDto.placeIds,
+        },
+      },
+      status: reviewPlaceDto.status,
+    });
   }
 
   @Patch(':id')
@@ -113,7 +117,7 @@ export class PlaceController {
     return this.placeService.update({
       where: { id: +id },
       data: updatePlaceDto,
-    })
+    });
   }
 
   @Delete('batch')
@@ -122,11 +126,11 @@ export class PlaceController {
       id: {
         in: deletePlaceDto.ids,
       },
-    })
+    });
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.placeService.remove({ id: +id })
+    return this.placeService.remove({ id: +id });
   }
 }

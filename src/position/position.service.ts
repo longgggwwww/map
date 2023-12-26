@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common'
-import { Prisma } from '@prisma/client'
-import { PrismaService } from 'nestjs-prisma'
+import { Injectable } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
+import { PrismaService } from 'nestjs-prisma';
 
 @Injectable()
 export class PositionService {
@@ -13,17 +13,17 @@ export class PositionService {
         department: true,
         persons: true,
       },
-    })
+    });
   }
 
   async findAll(params: {
-    skip?: number
-    take?: number
-    cursor?: Prisma.PositionWhereUniqueInput
-    where?: Prisma.PositionWhereInput
-    orderBy?: Prisma.PositionOrderByWithRelationAndSearchRelevanceInput
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.PositionWhereUniqueInput;
+    where?: Prisma.PositionWhereInput;
+    orderBy?: Prisma.PositionOrderByWithRelationAndSearchRelevanceInput;
   }) {
-    const { skip, take, cursor, where, orderBy } = params
+    const { skip, take, cursor, where, orderBy } = params;
     return this.prisma.position.findMany({
       skip,
       take,
@@ -34,7 +34,7 @@ export class PositionService {
         department: true,
         persons: true,
       },
-    })
+    });
   }
 
   async findUniq(where: Prisma.PositionWhereUniqueInput) {
@@ -44,14 +44,14 @@ export class PositionService {
         department: true,
         persons: true,
       },
-    })
+    });
   }
 
   async update(params: {
-    where: Prisma.PositionWhereUniqueInput
-    data: Prisma.PositionUpdateInput
+    where: Prisma.PositionWhereUniqueInput;
+    data: Prisma.PositionUpdateInput;
   }) {
-    const { where, data } = params
+    const { where, data } = params;
     return this.prisma.position.update({
       data,
       where,
@@ -59,13 +59,13 @@ export class PositionService {
         department: true,
         persons: true,
       },
-    })
+    });
   }
 
   async removeMany(where: Prisma.PositionWhereInput) {
     return this.prisma.position.deleteMany({
       where,
-    })
+    });
   }
 
   async remove(where: Prisma.PositionWhereUniqueInput) {
@@ -75,6 +75,6 @@ export class PositionService {
         department: true,
         persons: true,
       },
-    })
+    });
   }
 }
