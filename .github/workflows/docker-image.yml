@@ -21,11 +21,11 @@ jobs:
         username: ${{secrets.DOCKER_USERNAME}}
         password: ${{secrets.DOCKER_PASSWORD}}
 
-    - name: Docker Cache
-      uses: ScribeMD/docker-cache@0.3.7
+    - name: Cache
+      uses: actions/cache@v3.3.2
       with:
         key: gha
-
+          
     - name: Build and push Docker images
       uses: docker/build-push-action@v5.1.0
       with:
