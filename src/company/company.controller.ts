@@ -10,6 +10,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
+import { Public } from 'src/auth/decorators/public.decorator';
 import { LoggingInterceptor } from 'src/logging/logging.interceptor';
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
@@ -27,11 +28,13 @@ export class CompanyController {
     return this.companyService.create(createCompanyDto);
   }
 
+  @Public()
   @Get()
   findAll(@Query() findCompanyDto: FindCompanyDto) {
     return this.companyService.findAll(findCompanyDto);
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.companyService.findUniq({ id: +id });

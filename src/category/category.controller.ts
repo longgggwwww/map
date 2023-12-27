@@ -10,6 +10,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
+import { Public } from 'src/auth/decorators/public.decorator';
 import { LoggingInterceptor } from 'src/logging/logging.interceptor';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -27,11 +28,13 @@ export class CategoryController {
     return this.categoryService.create(createCategoryDto);
   }
 
+  @Public()
   @Get()
   findAll(@Query() findCategoryDto: FindCategoryDto) {
     return this.categoryService.findAll(findCategoryDto);
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.categoryService.findUniq({ id: +id });

@@ -10,6 +10,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
+import { Public } from 'src/auth/decorators/public.decorator';
 import { LoggingInterceptor } from 'src/logging/logging.interceptor';
 import { CreateWardDto } from './dto/create-ward.dto';
 import { DeleteWardDto } from './dto/delete-ward.dto';
@@ -27,11 +28,13 @@ export class WardController {
     return this.wardService.create(createWardDto);
   }
 
+  @Public()
   @Get()
   findAll(@Query() findWardDto: FindWardDto) {
     return this.wardService.findAll(findWardDto);
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.wardService.findUniq({ id: +id });

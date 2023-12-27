@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client';
 
 export class CreatePlaceDto implements Prisma.PlaceCreateInput {
   name: string;
-  photos?: Prisma.PlaceCreatephotosInput | string[];
+  photos?: string[] | Prisma.PlaceCreatephotosInput;
   address?: string;
   description?: string;
   email?: string;
@@ -14,6 +14,7 @@ export class CreatePlaceDto implements Prisma.PlaceCreateInput {
   createdAt?: string | Date;
   updatedAt?: string | Date;
   category?: Prisma.CategoryCreateNestedOneWithoutPlacesInput;
+  ward?: Prisma.WardCreateNestedOneWithoutPlacesInput;
   createdBy?: Prisma.UserCreateNestedOneWithoutMyPlacesInput;
   reviews?: Prisma.ReviewCreateNestedManyWithoutPlaceInput;
 }

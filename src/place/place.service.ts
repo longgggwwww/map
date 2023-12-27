@@ -17,6 +17,15 @@ export class PlaceService {
             user: true,
           },
         },
+        ward: {
+          include: {
+            district: {
+              include: {
+                province: true,
+              },
+            },
+          },
+        },
       },
     });
   }
@@ -43,6 +52,15 @@ export class PlaceService {
             user: true,
           },
         },
+        ward: {
+          include: {
+            district: {
+              include: {
+                province: true,
+              },
+            },
+          },
+        },
       },
     });
   }
@@ -56,6 +74,15 @@ export class PlaceService {
         reviews: {
           include: {
             user: true,
+          },
+        },
+        ward: {
+          include: {
+            district: {
+              include: {
+                province: true,
+              },
+            },
           },
         },
       },
@@ -78,6 +105,15 @@ export class PlaceService {
             user: true,
           },
         },
+        ward: {
+          include: {
+            district: {
+              include: {
+                province: true,
+              },
+            },
+          },
+        },
       },
     });
   }
@@ -97,6 +133,15 @@ export class PlaceService {
         reviews: {
           include: {
             user: true,
+          },
+        },
+        ward: {
+          include: {
+            district: {
+              include: {
+                province: true,
+              },
+            },
           },
         },
       },
@@ -158,6 +203,15 @@ export class PlaceService {
         reviews: {
           include: {
             user: true,
+          },
+        },
+        ward: {
+          include: {
+            district: {
+              include: {
+                province: true,
+              },
+            },
           },
         },
       },

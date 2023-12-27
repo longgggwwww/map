@@ -20,8 +20,6 @@ import { Public } from 'src/auth/decorators/public.decorator';
 import { LoggingInterceptor } from 'src/logging/logging.interceptor';
 import { Permissions } from 'src/permission/decoratos/permission.decorator';
 import { Permission } from 'src/permission/enums/permission.enum';
-import { Roles } from 'src/role/decoratos/role.decorator';
-import { Role } from 'src/role/enums/role.enum';
 import { CreatePlaceDto } from './dto/create-place.dto';
 import { DeletePlaceDto } from './dto/delete-place.dto';
 import { FindPlaceDto } from './dto/find-place.dto';
@@ -98,7 +96,7 @@ export class PlaceController {
     return this.placeService.findUniq({ id: +id });
   }
 
-  @Roles(Role.Admin)
+  // @Roles(Role.Admin)
   @Permissions(Permission.BrowsePost)
   @Patch('review')
   review(@Body() reviewPlaceDto: ReviewPlaceDto) {

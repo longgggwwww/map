@@ -1,5 +1,6 @@
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { Cache } from 'cache-manager';
@@ -11,6 +12,7 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
     @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
   ) {}
 
@@ -42,6 +44,13 @@ export class AuthService {
         roles,
         permissions,
       }),
+      refreshToken: this.jwtService.sign(
+        { sub: user.id },
+        {
+          secret: this.configService.get('REFRESH_TOKEN_SECRET'),
+          expiresIn: '30d',
+        },
+      ),
       user,
     };
   }
@@ -61,5 +70,41 @@ export class AuthService {
     return this.login(user);
   }
 
-  async refreshToken(token: string) {}
+  async refreshToken(token: string) {
+    // Check storage
+    const payload = await this.jwtService.verify(token, {
+      secret: this.configService.get('REFRESH_TOKEN_SECRET'),
+    });
+
+    const user = await this.userService.findUniq({
+      id: payload.sub,
+    });
+    if (!user) {
+      return new UnauthorizedException();
+    }
+
+    // New token
+    const roles = user.roles.map((role) => role.code);
+    const permissions = Array.from(
+      user.roles.reduce((set, role) => {
+        role.permissions.map((perm) => set.add(perm.code));
+        return set;
+      }, new Set()),
+    );
+    return {
+      accessToken: this.jwtService.sign({
+        username: user.username,
+        sub: user.id,
+        roles,
+        permissions,
+      }),
+      refreshToken: this.jwtService.sign(
+        { sub: user.id },
+        {
+          secret: this.configService.get('REFRESH_TOKEN_SECRET'),
+          expiresIn: '30d',
+        },
+      ),
+    };
+  }
 }

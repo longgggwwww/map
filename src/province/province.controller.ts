@@ -10,6 +10,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
+import { Public } from 'src/auth/decorators/public.decorator';
 import { LoggingInterceptor } from 'src/logging/logging.interceptor';
 import { CreateProvinceDto } from './dto/create-province.dto';
 import { DeleteProvinceDto } from './dto/delete-province.dto';
@@ -27,11 +28,13 @@ export class ProvinceController {
     return this.provinceService.create(createProvinceDto);
   }
 
+  @Public()
   @Get()
   findAll(@Query() findProvinceDto: FindProvinceDto) {
     return this.provinceService.findAll(findProvinceDto);
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.provinceService.findUniq({ id: +id });

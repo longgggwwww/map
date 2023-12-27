@@ -10,6 +10,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
+import { Public } from 'src/auth/decorators/public.decorator';
 import { LoggingInterceptor } from 'src/logging/logging.interceptor';
 import { DepartmentService } from './department.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
@@ -27,11 +28,13 @@ export class DepartmentController {
     return this.departmentService.create(createDepartmentDto);
   }
 
+  @Public()
   @Get()
   findAll(@Query() findDepartmentDto: FindDepartmentDto) {
     return this.departmentService.findAll(findDepartmentDto);
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.departmentService.findUniq({ id: +id });

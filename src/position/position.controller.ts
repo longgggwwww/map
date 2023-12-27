@@ -10,6 +10,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
+import { Public } from 'src/auth/decorators/public.decorator';
 import { LoggingInterceptor } from 'src/logging/logging.interceptor';
 import { CreatePositionDto } from './dto/create-position.dto';
 import { DeletePositionDto } from './dto/delete-position.dto';
@@ -27,11 +28,13 @@ export class PositionController {
     return this.positionService.create(createPositionDto);
   }
 
+  @Public()
   @Get()
   findAll(@Query() findPositionDto: FindPositionDto) {
     return this.positionService.findAll(findPositionDto);
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.positionService.findUniq({ id: +id });
