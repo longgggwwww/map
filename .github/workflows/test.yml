@@ -16,5 +16,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       -  name: "Step one"
+         run: echo "Begin"
       -  name: "Step two"
          run: echo "End" 
