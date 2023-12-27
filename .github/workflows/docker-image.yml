@@ -25,6 +25,8 @@ jobs:
         context: .
         tags: ${{secrets.DOCKER_USERNAME}}/map:latest
         push: true
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
         secrets: 
           DATABASE_URL=${{secrets.DATABASE_URL}}
           ACCESS_TOKEN_SECRET=${{secrets.ACCESS_TOKEN_SECRET}}
