@@ -10,6 +10,7 @@ import {
   Patch,
   Post,
   Query,
+  Request,
   UploadedFiles,
   UseInterceptors,
 } from '@nestjs/common';
@@ -71,14 +72,26 @@ export class PlaceController {
   }
 
   @Post()
-  create(@Body() createPlaceDto: CreatePlaceDto) {
-    return this.placeService.create(createPlaceDto);
+  create(@Body() createPlaceDto: CreatePlaceDto, @Request() req) {
+    return this.placeService.create(createPlaceDto, req.user.userId);
   }
 
   @Public()
   @Get()
   findAll(@Query() findPlaceDto: FindPlaceDto) {
-    return this.placeService.findAll(findPlaceDto);
+    const status: number = +findPlaceDto.status ?? 0;
+    if (status) {
+      const { where, ...rest } = findPlaceDto;
+      const dto = {
+        ...rest,
+        where: {
+          status,
+        },
+      };
+      return this.placeService.findAll(dto);
+    } else {
+      return this.placeService.findAll(findPlaceDto);
+    }
   }
 
   @Public()

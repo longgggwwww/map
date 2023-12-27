@@ -6,9 +6,16 @@ import { PrismaService } from 'nestjs-prisma';
 export class PlaceService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(data: Prisma.PlaceCreateInput) {
+  async create(data: Prisma.PlaceCreateInput, userId?: number) {
     return this.prisma.place.create({
-      data,
+      data: {
+        ...data,
+        createdBy: {
+          connect: {
+            id: +userId,
+          },
+        },
+      },
       include: {
         category: true,
         createdBy: true,
@@ -183,12 +190,6 @@ export class PlaceService {
                 contains: str,
                 mode: 'insensitive',
               },
-            },
-          },
-          {
-            address: {
-              contains: str,
-              mode: 'insensitive',
             },
           },
         ],

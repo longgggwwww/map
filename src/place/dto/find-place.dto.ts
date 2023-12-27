@@ -12,5 +12,7 @@ export class FindPlaceDto {
 
   where?: Prisma.PlaceWhereInput;
 
+  status?: number;
+
   orderBy?: Prisma.PlaceOrderByWithRelationAndSearchRelevanceInput;
 }
