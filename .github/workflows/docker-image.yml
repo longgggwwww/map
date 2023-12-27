@@ -14,8 +14,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag dpldevil/map:latest
     - name: Docker Login
       uses: docker/login-action@v3.0.0
       with:
@@ -27,6 +25,9 @@ jobs:
         context: .
         tags: ${{secrets.DOCKER_USERNAME}}/map:latest
         push: true
-        secrets: DATABASE_URL=${{secrets.DATABASE_URL}}, ACCESS_TOKEN_SECRET=${{secrets.ACCESS_TOKEN_SECRET}}, REFRESH_TOKEN_SECRET=${{secrets.REFRESH_TOKEN_SECRET}}
+        secrets: 
+          DATABASE_URL=${{secrets.DATABASE_URL}}
+          ACCESS_TOKEN_SECRET=${{secrets.ACCESS_TOKEN_SECRET}}
+          REFRESH_TOKEN_SECRET=${{secrets.REFRESH_TOKEN_SECRET}}
           
               
