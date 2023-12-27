@@ -21,19 +21,12 @@ jobs:
         username: ${{secrets.DOCKER_USERNAME}}
         password: ${{secrets.DOCKER_PASSWORD}}
 
-    - name: Cache
-      uses: actions/cache@v3.3.2
-      with:
-        key: gha
-          
     - name: Build and push Docker images
       uses: docker/build-push-action@v5.1.0
       with:
         context: .
         tags: ${{secrets.DOCKER_USERNAME}}/map:latest
         push: true
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
         secrets: 
           DATABASE_URL=${{secrets.DATABASE_URL}}
           ACCESS_TOKEN_SECRET=${{secrets.ACCESS_TOKEN_SECRET}}
