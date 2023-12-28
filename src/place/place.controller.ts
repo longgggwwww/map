@@ -27,6 +27,8 @@ import { FindPlaceDto } from './dto/find-place.dto';
 import { ReviewPlaceDto } from './dto/review-place.dto';
 import { UpdatePlaceDto } from './dto/update-place.dto';
 import { PlaceService } from './place.service';
+import { Roles } from 'src/role/decoratos/role.decorator';
+import { Role } from 'src/role/enums/role.enum';
 
 @UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('places')
@@ -79,8 +81,8 @@ export class PlaceController {
   @Public()
   @Get()
   findAll(@Query() findPlaceDto: FindPlaceDto) {
-    const status: number = +findPlaceDto.status ?? 0;
-    if (status) {
+    const status: number = +findPlaceDto.status ?? -1;
+    if (status > -1) {
       const { where, ...rest } = findPlaceDto;
       const dto = {
         ...rest,
@@ -109,8 +111,8 @@ export class PlaceController {
     return this.placeService.findUniq({ id: +id });
   }
 
-  // @Roles(Role.Admin)
   @Permissions(Permission.BrowsePost)
+  @Roles(Role.Admin)
   @Patch('review')
   review(@Body() reviewPlaceDto: ReviewPlaceDto) {
     return this.placeService.review({

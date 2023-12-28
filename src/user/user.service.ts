@@ -17,7 +17,20 @@ export class UserService {
             permissions: true,
           },
         },
-        myPlaces: true,
+        myPlaces: {
+          include: {
+            category: true,
+            ward: {
+              include: {
+                district: {
+                  include: {
+                    province: true,
+                  },
+                },
+              },
+            },
+          },
+        },
         createdCategories: true,
         reviews: true,
         personal: {
@@ -60,7 +73,20 @@ export class UserService {
             permissions: true,
           },
         },
-        myPlaces: true,
+        myPlaces: {
+          include: {
+            category: true,
+            ward: {
+              include: {
+                district: {
+                  include: {
+                    province: true,
+                  },
+                },
+              },
+            },
+          },
+        },
         createdCategories: true,
         reviews: true,
         personal: {
@@ -92,7 +118,20 @@ export class UserService {
             permissions: true,
           },
         },
-        myPlaces: true,
+        myPlaces: {
+          include: {
+            category: true,
+            ward: {
+              include: {
+                district: {
+                  include: {
+                    province: true,
+                  },
+                },
+              },
+            },
+          },
+        },
         createdCategories: true,
         reviews: true,
         personal: {
@@ -130,7 +169,20 @@ export class UserService {
             permissions: true,
           },
         },
-        myPlaces: true,
+        myPlaces: {
+          include: {
+            category: true,
+            ward: {
+              include: {
+                district: {
+                  include: {
+                    province: true,
+                  },
+                },
+              },
+            },
+          },
+        },
         createdCategories: true,
         reviews: true,
         personal: {
@@ -168,7 +220,20 @@ export class UserService {
             permissions: true,
           },
         },
-        myPlaces: true,
+        myPlaces: {
+          include: {
+            category: true,
+            ward: {
+              include: {
+                district: {
+                  include: {
+                    province: true,
+                  },
+                },
+              },
+            },
+          },
+        },
         createdCategories: true,
         reviews: true,
         personal: {
@@ -229,7 +294,20 @@ export class UserService {
             permissions: true,
           },
         },
-        myPlaces: true,
+        myPlaces: {
+          include: {
+            category: true,
+            ward: {
+              include: {
+                district: {
+                  include: {
+                    province: true,
+                  },
+                },
+              },
+            },
+          },
+        },
         createdCategories: true,
         reviews: true,
         personal: {

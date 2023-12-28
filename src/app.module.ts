@@ -17,6 +17,8 @@ import { ReviewModule } from './review/review.module';
 import { RoleModule } from './role/role.module';
 import { UserModule } from './user/user.module';
 import { WardModule } from './ward/ward.module';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -38,6 +40,13 @@ import { WardModule } from './ward/ward.module';
     GroupModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ConfigService],
+  providers: [
+    AppService,
+    ConfigService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 export class AppModule {}
