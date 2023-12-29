@@ -74,8 +74,10 @@ export class PlaceController {
   }
 
   @Post()
-  create(@Body() createPlaceDto: CreatePlaceDto, @Request() req) {
-    return this.placeService.create(createPlaceDto, req.user.userId);
+  async create(@Body() createPlaceDto: CreatePlaceDto, @Request() req) {
+    const places = await this.placeService.findAll({});
+    console.log(places);
+    return await this.placeService.create(createPlaceDto, req.user.userId);
   }
 
   @Public()

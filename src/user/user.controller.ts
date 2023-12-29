@@ -26,6 +26,7 @@ import { UpdateMyProfileDto } from './dto/update-my-profile.dto';
 import { UpdateUserStatusDto } from './dto/update-user-status.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
+import { SetRoleDto } from './dto/set-role.dto';
 
 @UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('users')
@@ -145,6 +146,11 @@ export class UserController {
       },
       data: updateUserDto,
     });
+  }
+
+  @Patch('/role')
+  setRole(@Body() setRoleDto: SetRoleDto) {
+    return this.userService.setRole(setRoleDto.userIds, setRoleDto.roleId);
   }
 
   @Delete('batch')

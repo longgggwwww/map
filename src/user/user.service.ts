@@ -329,4 +329,24 @@ export class UserService {
       },
     });
   }
+
+  async setRole(userIds: number[], roleId: number) {
+    for await (const id of userIds) {
+      this.prisma.user.update({
+        where: {
+          id,
+        },
+        data: {
+          roles: {
+            connect: [
+              {
+                id: roleId,
+              },
+            ],
+          },
+        },
+      });
+    }
+    return true;
+  }
 }

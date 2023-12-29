@@ -18,7 +18,11 @@ export class PlaceService {
       },
       include: {
         category: true,
-        createdBy: true,
+        createdBy: {
+          include: {
+            personal: true,
+          },
+        },
         reviews: {
           include: {
             user: true,
@@ -53,7 +57,11 @@ export class PlaceService {
       orderBy,
       include: {
         category: true,
-        createdBy: true,
+        createdBy: {
+          include: {
+            personal: true,
+          },
+        },
         reviews: {
           include: {
             user: true,
@@ -77,7 +85,11 @@ export class PlaceService {
       where,
       include: {
         category: true,
-        createdBy: true,
+        createdBy: {
+          include: {
+            personal: true,
+          },
+        },
         reviews: {
           include: {
             user: true,
@@ -106,7 +118,11 @@ export class PlaceService {
       where,
       include: {
         category: true,
-        createdBy: true,
+        createdBy: {
+          include: {
+            personal: true,
+          },
+        },
         reviews: {
           include: {
             user: true,
@@ -136,7 +152,11 @@ export class PlaceService {
       where,
       include: {
         category: true,
-        createdBy: true,
+        createdBy: {
+          include: {
+            personal: true,
+          },
+        },
         reviews: {
           include: {
             user: true,
@@ -200,7 +220,11 @@ export class PlaceService {
       orderBy,
       include: {
         category: true,
-        createdBy: true,
+        createdBy: {
+          include: {
+            personal: true,
+          },
+        },
         reviews: {
           include: {
             user: true,
