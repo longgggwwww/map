@@ -1,0 +1,118 @@
+version: '3'
+
+services:
+    pg_user:
+        container_name: postgres_user
+        image: postgres:alpine
+        ports:
+            - 5432:5432
+        volumes:
+            - pg_user:/data/db
+        environment:
+            - POSTGRES_USER=${USER_POSTGRES_USER:-root}
+            - POSTGRES_PASSWORD=${USER_POSTGRES_PASS:-123456}
+        networks:
+            - net
+
+    pg_map:
+        container_name: postgres_map
+        image: postgres:alpine
+        ports:
+            - 5433:5432
+        volumes:
+            - pg_map:/data/db
+        environment:
+            - POSTGRES_USER=${MAP_POSTGRES_USER:-root}
+            - POSTGRES_PASSWORD=${MAP_POSTGRES_PASS:-123456}
+        networks:
+            - net
+
+    pg_com:
+        container_name: postgres_com
+        image: postgres:alpine
+        ports:
+            - 5434:5432
+        volumes:
+            - pg_com:/data/db
+        environment:
+            - POSTGRES_USER=${COMPANY_POSTGRES_USER:-root}
+            - POSTGRES_PASSWORD=${COMPANY_POSTGRES_PASS:-123456}
+        networks:
+            - net
+
+    pg_unit:
+        container_name: postgres_unit
+        image: postgres:alpine
+        ports:
+            - 5435:5432
+        volumes:
+            - pg_unit:/data/db
+        environment:
+            - POSTGRES_USER=${UNIT_POSTGRES_USER:-root}
+            - POSTGRES_PASSWORD=${UNIT_POSTGRES_PASS:-123456}
+        networks:
+            - net
+
+    pg_log:
+        container_name: postgres_log
+        image: postgres:alpine
+        ports:
+            - 5436:5432
+        volumes:
+            - pg_log:/data/db
+        environment:
+            - POSTGRES_USER=${LOG_POSTGRES_USER:-root}
+            - POSTGRES_PASSWORD=${LOG_POSTGRES_PASS:-123456}
+        networks:
+            - net
+
+    adminer:
+        container_name: adminer
+        image: adminer
+        restart: always
+        ports:
+            - 80:8080
+        environment:
+            - ADMINER_DESIGN=pokorny
+        volumes:
+            - ./config/adminer/plugins:/var/www/html/plugins-enabled:ro
+        networks:
+            - net
+        depends_on:
+            - pg_user
+            - pg_map
+            - pg_com
+            - pg_unit
+            - pg_log
+
+    # rabbitmq:
+    #     image: rabbitmq:management
+    #     container_name: rabbitmq
+    #     ports:
+    #         - 5672:5672
+    #         - 15672:15672
+    #     volumes:
+    #         - rmq:/var/lib/rabbitmq
+    #     environment:
+    #         - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER:-root}
+    #         - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS:-123456}
+    #     networks:
+    #         - net
+
+volumes:
+    pg_user:
+        name: user_db
+    pg_map:
+        name: map_db
+    pg_com:
+        name: com_db
+    pg_unit:
+        name: map_unit
+    pg_log:
+        name: log_db
+    # rmq:
+    #     name: rabbitmq
+
+networks:
+    net:
+        driver: bridge

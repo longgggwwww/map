@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/@map/prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("MAP_DATABASE_URL")
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String
+  places      Place[]
+  color       String?
+  icon        String?
+  createdById Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Place {
+  id          Int       @id @default(autoincrement())
+  name        String
+  category    Category? @relation(fields: [categoryId], references: [id])
+  categoryId  Int?
+  wardId      Int?
+  photos      String[]
+  address     String?
+  description String?
+  email       String?
+  phone       String?
+  website     String?
+  status      Int       @default(0)
+  createdById Int?
+  reviews     Review[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  place     Place    @relation(fields: [placeId], references: [id])
+  placeId   Int
+  content   String
+  stars     Int
+  photos    String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

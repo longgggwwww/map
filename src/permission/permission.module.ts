@@ -7,15 +7,15 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [ConfigModule],
-  controllers: [PermissionController],
-  providers: [
-    PermissionService,
-    JwtService,
-    {
-      provide: APP_GUARD,
-      useClass: PermissionsGuard,
-    },
-  ],
+    imports: [ConfigModule],
+    controllers: [PermissionController],
+    providers: [
+        PermissionService,
+        JwtService,
+        {
+            provide: APP_GUARD,
+            useClass: PermissionsGuard,
+        },
+    ],
 })
 export class PermissionModule {}

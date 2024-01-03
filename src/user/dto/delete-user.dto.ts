@@ -1,3 +1,6 @@
+import { IsArray } from 'class-validator';
+
 export class DeleteUserDto {
-  ids: number[];
+    @IsArray()
+    ids: number[];
 }

@@ -1,0 +1,21 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/@log/prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("LOG_DATABASE_URL")
+}
+
+model Log {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  method    String
+  url       String
+  content   String?
+  time      BigInt
+  ip        String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

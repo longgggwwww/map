@@ -1,21 +1,21 @@
 name: Test Workflow
 
 on:
-  workflow_call:
+    workflow_call:
 
 jobs:
-  job-01:
-    runs-on: unbuntu-latest
-    steps:
-      -  name: First
-         run: |
-           echo "First step"
-      -  name: Second
-         run: echo "Second step"
-  job-02:
-    runs-on: ubuntu-latest
-    steps:
-      -  name: "Step one"
-         run: echo "Begin"
-      -  name: "Step two"
-         run: echo "End 1" 
+    job-01:
+        runs-on: unbuntu-latest
+        steps:
+            - name: First
+              run: |
+                  echo "First step"
+            - name: Second
+              run: echo "Second step"
+    job-02:
+        runs-on: ubuntu-latest
+        steps:
+            - name: 'Step one'
+              run: echo "Begin"
+            - name: 'Step two'
+              run: echo "End 1"

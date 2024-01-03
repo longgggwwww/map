@@ -1,9 +1,7 @@
-import { Prisma } from '@prisma/client';
+import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateGroupDto implements Prisma.PermissionGroupCreateInput {
-  name: string;
-  createdAt?: string | Date;
-  updatedAt?: string | Date;
-  permissions?: Prisma.PermissionCreateNestedManyWithoutGroupInput;
-  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedGroupsInput;
+export class CreateGroupDto {
+    @IsString()
+    @IsNotEmpty()
+    name: string;
 }

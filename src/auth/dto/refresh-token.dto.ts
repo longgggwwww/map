@@ -1,3 +1,3 @@
 export class RefreshTokenDto {
-  token: string;
+    token: string;
 }

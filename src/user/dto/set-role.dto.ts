@@ -1,4 +1,4 @@
 export class SetRoleDto {
-  userIds: number[];
-  roleId: number;
+    userIds: number[];
+    roleId: number;
 }

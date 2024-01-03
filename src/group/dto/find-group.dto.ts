@@ -1,9 +1,9 @@
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@user/prisma/client';
 
 export class FindGroupDto {
-  skip?: number;
-  take?: number;
-  cursor?: Prisma.PermissionGroupWhereUniqueInput;
-  where?: Prisma.PermissionGroupWhereInput;
-  orderBy?: Prisma.PermissionGroupOrderByWithRelationAndSearchRelevanceInput;
+    skip?: number;
+    take?: number;
+    cursor?: Prisma.GroupWhereUniqueInput;
+    where?: Prisma.GroupWhereInput;
+    orderBy?: Prisma.GroupOrderByWithRelationInput;
 }

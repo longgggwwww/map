@@ -1,11 +1,24 @@
-import { Prisma } from '@prisma/client';
+import {
+    IsNotEmpty,
+    IsNumberString,
+    IsOptional,
+    IsString,
+} from 'class-validator';
 
-export class CreateCategoryDto implements Prisma.CategoryCreateInput {
-  name: string;
-  color?: string;
-  icon?: string;
-  createdAt?: string | Date;
-  updatedAt?: string | Date;
-  places?: Prisma.PlaceCreateNestedManyWithoutCategoryInput;
-  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedCategoriesInput;
+export class CreateCategoryDto {
+    @IsString()
+    @IsNotEmpty()
+    name: string;
+
+    @IsString()
+    @IsOptional()
+    color?: string;
+
+    @IsString()
+    @IsOptional()
+    icon?: string;
+
+    @IsNumberString()
+    @IsOptional()
+    createdById?: number;
 }

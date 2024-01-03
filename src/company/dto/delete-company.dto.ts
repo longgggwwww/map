@@ -1,3 +1,6 @@
+import { IsArray } from 'class-validator';
+
 export class DeleteCompanyDto {
-  ids: number[];
+    @IsArray()
+    ids: number[];
 }

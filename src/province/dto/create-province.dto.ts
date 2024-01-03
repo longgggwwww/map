@@ -1,9 +1,24 @@
-import { Prisma } from '@prisma/client';
+import {
+    IsDateString,
+    IsNotEmpty,
+    IsOptional,
+    IsString,
+} from 'class-validator';
 
-export class CreateProvinceDto implements Prisma.ProvinceCreateInput {
-  name: string;
-  code: string;
-  createdAt?: string | Date;
-  updatedAt?: string | Date;
-  districts?: Prisma.DistrictCreateNestedManyWithoutProvinceInput;
+export class CreateProvinceDto {
+    @IsString()
+    @IsNotEmpty()
+    name: string;
+
+    @IsString()
+    @IsNotEmpty()
+    code: string;
+
+    @IsDateString()
+    @IsOptional()
+    createdAt?: string | Date;
+
+    @IsDateString()
+    @IsOptional()
+    updatedAt?: string | Date;
 }

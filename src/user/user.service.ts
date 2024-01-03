@@ -1,352 +1,140 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+import { Injectable } from '@nestjs/common';
+import { Prisma, PrismaClient } from '@user/prisma/client';
 import * as bcrypt from 'bcrypt';
-import { PrismaService } from 'nestjs-prisma';
+import { CustomPrismaService } from 'nestjs-prisma';
 import { ChangePasswordDto } from './dto/change-pass-user.dto';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prisma: PrismaService) {}
+    constructor(private prisma: CustomPrismaService<PrismaClient>) {}
 
-  async create(data: Prisma.UserCreateInput) {
-    return this.prisma.user.create({
-      data,
-      include: {
-        roles: {
-          include: {
-            permissions: true,
-          },
-        },
-        myPlaces: {
-          include: {
-            category: true,
-            ward: {
-              include: {
-                district: {
-                  include: {
-                    province: true,
-                  },
+    async create(data: Prisma.UserCreateInput) {
+        return this.prisma.client.user.create({
+            data,
+            include: {
+                profile: true,
+                roles: {
+                    include: {
+                        permissions: true,
+                    },
                 },
-              },
             },
-          },
-        },
-        createdCategories: true,
-        reviews: true,
-        personal: {
-          include: {
-            ward: {
-              include: {
-                district: {
-                  include: {
-                    province: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-        createdRoles: true,
-        createdPermissions: true,
-        log: true,
-      },
-    });
-  }
-
-  async findAll(params: {
-    skip?: number;
-    take?: number;
-    cursor?: Prisma.UserWhereUniqueInput;
-    where?: Prisma.UserWhereInput;
-    orderBy?: Prisma.UserOrderByWithRelationAndSearchRelevanceInput;
-  }) {
-    const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.user.findMany({
-      skip,
-      take,
-      cursor,
-      where,
-      orderBy,
-      include: {
-        roles: {
-          include: {
-            permissions: true,
-          },
-        },
-        myPlaces: {
-          include: {
-            category: true,
-            ward: {
-              include: {
-                district: {
-                  include: {
-                    province: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-        createdCategories: true,
-        reviews: true,
-        personal: {
-          include: {
-            ward: {
-              include: {
-                district: {
-                  include: {
-                    province: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-        createdRoles: true,
-        createdPermissions: true,
-        log: true,
-      },
-    });
-  }
-
-  async findUniq(where: Prisma.UserWhereUniqueInput) {
-    return this.prisma.user.findUniqueOrThrow({
-      where,
-      include: {
-        roles: {
-          include: {
-            permissions: true,
-          },
-        },
-        myPlaces: {
-          include: {
-            category: true,
-            ward: {
-              include: {
-                district: {
-                  include: {
-                    province: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-        createdCategories: true,
-        reviews: true,
-        personal: {
-          include: {
-            ward: {
-              include: {
-                district: {
-                  include: {
-                    province: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-        createdRoles: true,
-        createdPermissions: true,
-        log: true,
-      },
-    });
-  }
-
-  async update(params: {
-    where: Prisma.UserWhereUniqueInput;
-    data: Prisma.UserUpdateInput;
-  }) {
-    const { where, data } = params;
-    const { password, ...rest } = data;
-    return this.prisma.user.update({
-      data: rest,
-      where,
-      include: {
-        roles: {
-          include: {
-            permissions: true,
-          },
-        },
-        myPlaces: {
-          include: {
-            category: true,
-            ward: {
-              include: {
-                district: {
-                  include: {
-                    province: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-        createdCategories: true,
-        reviews: true,
-        personal: {
-          include: {
-            ward: {
-              include: {
-                district: {
-                  include: {
-                    province: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-        createdRoles: true,
-        createdPermissions: true,
-        log: true,
-      },
-    });
-  }
-
-  async removeMany(where: Prisma.UserWhereInput) {
-    return this.prisma.user.deleteMany({
-      where,
-    });
-  }
-
-  async remove(where: Prisma.UserWhereUniqueInput) {
-    return this.prisma.user.delete({
-      where,
-      include: {
-        roles: {
-          include: {
-            permissions: true,
-          },
-        },
-        myPlaces: {
-          include: {
-            category: true,
-            ward: {
-              include: {
-                district: {
-                  include: {
-                    province: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-        createdCategories: true,
-        reviews: true,
-        personal: {
-          include: {
-            ward: {
-              include: {
-                district: {
-                  include: {
-                    province: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-        createdRoles: true,
-        createdPermissions: true,
-        log: true,
-      },
-    });
-  }
-
-  async updateUserStatus(params: {
-    where: Prisma.UserWhereInput;
-    data: {
-      status: boolean;
-    };
-  }) {
-    const { where, data } = params;
-    return this.prisma.user.updateMany({
-      data: {
-        isActive: data.status,
-      },
-      where,
-    });
-  }
-
-  async changePassword(params: {
-    where: Prisma.UserWhereUniqueInput;
-    data: ChangePasswordDto;
-  }) {
-    const { where, data } = params;
-    const user = await this.prisma.user.findUniqueOrThrow({ where });
-    const isMatch = await bcrypt.compare(data.password, user.password);
-    if (!isMatch) {
-      throw new UnauthorizedException();
+        });
     }
-    const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(data.newPassword, salt);
-    return this.prisma.user.update({
-      where,
-      data: {
-        password: hash,
-      },
-      include: {
-        roles: {
-          include: {
-            permissions: true,
-          },
-        },
-        myPlaces: {
-          include: {
-            category: true,
-            ward: {
-              include: {
-                district: {
-                  include: {
-                    province: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-        createdCategories: true,
-        reviews: true,
-        personal: {
-          include: {
-            ward: {
-              include: {
-                district: {
-                  include: {
-                    province: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-        createdRoles: true,
-        createdPermissions: true,
-        log: true,
-      },
-    });
-  }
 
-  async setRole(userIds: number[], roleId: number) {
-    for await (const id of userIds) {
-      this.prisma.user.update({
-        where: {
-          id,
-        },
-        data: {
-          roles: {
-            connect: [
-              {
-                id: roleId,
-              },
-            ],
-          },
-        },
-      });
+    async findAll(params: {
+        skip?: number;
+        take?: number;
+        cursor?: Prisma.UserWhereUniqueInput;
+        where?: Prisma.UserWhereInput;
+        orderBy?: Prisma.UserOrderByWithRelationInput;
+    }) {
+        const { skip, take, cursor, where, orderBy } = params;
+        return this.prisma.client.user.findMany({
+            skip,
+            take,
+            cursor,
+            where,
+            orderBy,
+            include: {
+                profile: true,
+                roles: {
+                    include: {
+                        permissions: true,
+                    },
+                },
+            },
+        });
     }
-    return true;
-  }
+
+    async findUniq(where: Prisma.UserWhereUniqueInput) {
+        return this.prisma.client.user.findUniqueOrThrow({
+            where,
+            include: {
+                profile: true,
+                roles: {
+                    include: {
+                        permissions: true,
+                    },
+                },
+            },
+        });
+    }
+
+    async update(params: {
+        where: Prisma.UserWhereUniqueInput;
+        data: Prisma.UserUpdateInput;
+    }) {
+        const { where, data } = params;
+        return this.prisma.client.user.update({
+            where,
+            data,
+            include: {
+                profile: true,
+                roles: {
+                    include: {
+                        permissions: true,
+                    },
+                },
+            },
+        });
+    }
+
+    async remove(where: Prisma.UserWhereInput) {
+        return this.prisma.client.user.deleteMany({ where });
+    }
+
+    async updateMany(params: {
+        where: Prisma.UserWhereInput;
+        data: Prisma.UserUpdateManyArgs;
+    }) {
+        return this.prisma.client.user.updateMany({
+            where: params.where,
+            data: params.data,
+        });
+    }
+
+    async changePassword(params: {
+        where: Prisma.UserWhereUniqueInput;
+        data: ChangePasswordDto;
+    }) {
+        const { where, data } = params;
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(data.newPassword, salt);
+        return this.prisma.client.user.update({
+            where,
+            data: {
+                password: hash,
+            },
+            include: {
+                profile: true,
+                roles: {
+                    include: {
+                        permissions: true,
+                    },
+                },
+            },
+        });
+    }
+
+    async setRole(userIds: number[], roleId: number) {
+        console.log(userIds, roleId);
+        for await (const id of userIds) {
+            this.prisma.client.user.update({
+                where: {
+                    id,
+                },
+                data: {
+                    roles: {
+                        connect: [
+                            {
+                                id: roleId,
+                            },
+                        ],
+                    },
+                },
+            });
+        }
+        return true;
+    }
 }

@@ -1,3 +1,7 @@
+import { IsArray, IsString } from 'class-validator';
+
 export class DeleteGroupDto {
-  ids: number[];
+    @IsString({ each: true })
+    @IsArray()
+    ids: number[];
 }

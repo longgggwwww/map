@@ -1,0 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/@unit/prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("UNIT_DATABASE_URL")
+}
+
+model Province {
+  id          Int        @id @default(autoincrement())
+  name        String
+  code        String     @unique
+  districts   District[]
+  createdById Int?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model District {
+  id          Int      @id @default(autoincrement())
+  name        String
+  code        String   @unique
+  province    Province @relation(fields: [provinceId], references: [id])
+  provinceId  Int
+  wards       Ward[]
+  createdById Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Ward {
+  id          Int      @id @default(autoincrement())
+  name        String
+  code        String   @unique
+  district    District @relation(fields: [districtId], references: [id])
+  districtId  Int
+  createdById Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

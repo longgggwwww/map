@@ -1,64 +1,67 @@
 import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Query,
-  UseInterceptors,
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    ParseIntPipe,
+    Patch,
+    Post,
+    Query,
+    UseInterceptors,
 } from '@nestjs/common';
-import { PrismaService } from 'nestjs-prisma';
 import { Public } from 'src/auth/decorators/public.decorator';
-import { LoggingInterceptor } from 'src/logging/logging.interceptor';
+import { LoggingInterceptor } from 'src/logging.interceptor';
 import { CompanyService } from './company.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { DeleteCompanyDto } from './dto/delete-company.dto';
 import { FindCompanyDto } from './dto/find-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 
-@UseInterceptors(new LoggingInterceptor(new PrismaService()))
+@UseInterceptors(LoggingInterceptor)
 @Controller('companies')
 export class CompanyController {
-  constructor(private readonly companyService: CompanyService) {}
+    constructor(private company: CompanyService) {}
 
-  @Post()
-  create(@Body() createCompanyDto: CreateCompanyDto) {
-    return this.companyService.create(createCompanyDto);
-  }
+    @Post()
+    create(@Body() dto: CreateCompanyDto) {
+        return this.company.create(dto);
+    }
 
-  @Public()
-  @Get()
-  findAll(@Query() findCompanyDto: FindCompanyDto) {
-    return this.companyService.findAll(findCompanyDto);
-  }
+    @Public()
+    @Get()
+    findAll(@Query() dto: FindCompanyDto) {
+        return this.company.findAll(dto);
+    }
 
-  @Public()
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.companyService.findUniq({ id: +id });
-  }
+    @Public()
+    @Get(':id')
+    findOne(@Param('id', ParseIntPipe) id: number) {
+        return this.company.findUniq({ id });
+    }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCompanyDto: UpdateCompanyDto) {
-    return this.companyService.update({
-      where: { id: +id },
-      data: updateCompanyDto,
-    });
-  }
+    @Patch(':id')
+    update(
+        @Param('id', ParseIntPipe) id: number,
+        @Body() dto: UpdateCompanyDto,
+    ) {
+        return this.company.update({
+            where: { id },
+            data: dto,
+        });
+    }
 
-  @Delete('batch')
-  removeMany(@Body() deleteCompanyDto: DeleteCompanyDto) {
-    return this.companyService.removeMany({
-      id: {
-        in: deleteCompanyDto.ids,
-      },
-    });
-  }
+    @Delete('batch')
+    removeMany(@Body() dto: DeleteCompanyDto) {
+        return this.company.remove({
+            id: {
+                in: dto.ids,
+            },
+        });
+    }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.companyService.remove({ id: +id });
-  }
+    @Delete(':id')
+    remove(@Param('id', ParseIntPipe) id: number) {
+        return this.company.remove({ id });
+    }
 }

@@ -1,14 +1,33 @@
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@user/prisma/client';
+import {
+    IsBooleanString,
+    IsNotEmpty,
+    IsNumberString,
+    IsOptional,
+    IsString,
+} from 'class-validator';
 
-export class CreateUserDto implements Prisma.UserCreateInput {
-  username: string;
-  password: string;
-  type?: number;
-  isActive?: boolean;
-  createdAt?: string | Date;
-  updatedAt?: string | Date;
-  personal?: Prisma.PersonalCreateNestedOneWithoutUserInput;
-  createdRoles?: Prisma.RoleCreateNestedManyWithoutCreatedByInput;
-  createdPermissions?: Prisma.PermissionCreateNestedManyWithoutCreatedByInput;
-  log?: Prisma.LogCreateNestedManyWithoutUserInput;
+export class CreateUserDto {
+    @IsString()
+    @IsNotEmpty()
+    username: string;
+
+    @IsString()
+    @IsNotEmpty()
+    password: string;
+
+    @IsNumberString()
+    @IsOptional()
+    type?: number;
+
+    @IsBooleanString()
+    @IsOptional()
+    isActive?: boolean;
+
+    @IsOptional()
+    profile?: Prisma.ProfileCreateNestedOneWithoutUserInput;
+
+    @IsNumberString()
+    @IsOptional()
+    roleId?: number;
 }
