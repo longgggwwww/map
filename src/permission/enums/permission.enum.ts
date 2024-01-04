@@ -18,5 +18,5 @@ export enum Permission {
   CreatePost = 'CREATE_POST',
   UpdatePost = 'UPDATE_POST',
   DeletePost = 'DELETE_POST',
-  BrowsePost = 'BROWSE_POST',
+  BrowsePlace = 'BROWSE_PLACES',
 }

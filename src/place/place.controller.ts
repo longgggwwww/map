@@ -21,14 +21,14 @@ import { Public } from 'src/auth/decorators/public.decorator';
 import { LoggingInterceptor } from 'src/logging/logging.interceptor';
 import { Permissions } from 'src/permission/decoratos/permission.decorator';
 import { Permission } from 'src/permission/enums/permission.enum';
+import { Roles } from 'src/role/decoratos/role.decorator';
+import { Role } from 'src/role/enums/role.enum';
 import { CreatePlaceDto } from './dto/create-place.dto';
 import { DeletePlaceDto } from './dto/delete-place.dto';
 import { FindPlaceDto } from './dto/find-place.dto';
 import { ReviewPlaceDto } from './dto/review-place.dto';
 import { UpdatePlaceDto } from './dto/update-place.dto';
 import { PlaceService } from './place.service';
-import { Roles } from 'src/role/decoratos/role.decorator';
-import { Role } from 'src/role/enums/role.enum';
 
 @UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('places')
@@ -113,7 +113,7 @@ export class PlaceController {
     return this.placeService.findUniq({ id: +id });
   }
 
-  @Permissions(Permission.BrowsePost)
+  @Permissions(Permission.BrowsePlace)
   @Roles(Role.Admin)
   @Patch('review')
   review(@Body() reviewPlaceDto: ReviewPlaceDto) {
