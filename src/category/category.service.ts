@@ -12,6 +12,7 @@ export class CategoryService {
       include: {
         createdBy: true,
         places: true,
+        subCategory: true,
       },
     });
   }
@@ -33,6 +34,7 @@ export class CategoryService {
       include: {
         createdBy: true,
         places: true,
+        subCategory: true,
       },
     });
   }
@@ -43,6 +45,7 @@ export class CategoryService {
       include: {
         createdBy: true,
         places: true,
+        subCategory: true,
       },
     });
   }
@@ -58,6 +61,7 @@ export class CategoryService {
       include: {
         createdBy: true,
         places: true,
+        subCategory: true,
       },
     });
   }
@@ -74,6 +78,7 @@ export class CategoryService {
       include: {
         createdBy: true,
         places: true,
+        subCategory: true,
       },
     });
   }
