@@ -55,7 +55,7 @@ export class RoleService {
     data: Prisma.RoleUpdateInput;
   }) {
     const { where, data } = params;
-    return this.prisma.role.update({
+    return await this.prisma.role.update({
       data,
       where,
       include: {

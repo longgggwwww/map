@@ -6,6 +6,7 @@ export class CreateCategoryDto implements Prisma.CategoryCreateInput {
   icon?: string;
   createdAt?: string | Date;
   updatedAt?: string | Date;
+  subCategory?: Prisma.SubCategoryCreateNestedOneWithoutCategoriesInput;
   places?: Prisma.PlaceCreateNestedManyWithoutCategoryInput;
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedCategoriesInput;
 }

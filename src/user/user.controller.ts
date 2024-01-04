@@ -22,11 +22,11 @@ import { ChangePasswordDto } from './dto/change-pass-user.dto';
 import { CreateUserDto } from './dto/create-user.dto';
 import { DeleteUserDto } from './dto/delete-user.dto';
 import { FindUserDto } from './dto/find-user.dto';
+import { SetRoleDto } from './dto/set-role.dto';
 import { UpdateMyProfileDto } from './dto/update-my-profile.dto';
 import { UpdateUserStatusDto } from './dto/update-user-status.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserService } from './user.service';
-import { SetRoleDto } from './dto/set-role.dto';
 
 @UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('users')
@@ -138,6 +138,11 @@ export class UserController {
     });
   }
 
+  @Patch('role')
+  setRole(@Body() setRoleDto: SetRoleDto) {
+    return this.userService.setRole(setRoleDto.userIds, setRoleDto.roleId);
+  }
+
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update({
@@ -146,11 +151,6 @@ export class UserController {
       },
       data: updateUserDto,
     });
-  }
-
-  @Patch('/role')
-  setRole(@Body() setRoleDto: SetRoleDto) {
-    return this.userService.setRole(setRoleDto.userIds, setRoleDto.roleId);
   }
 
   @Delete('batch')
