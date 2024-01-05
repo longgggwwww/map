@@ -339,7 +339,7 @@ export class UserService {
         },
         data: {
           roles: {
-            connect: [
+            set: [
               {
                 id: roleId,
               },
