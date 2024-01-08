@@ -1,11 +1,8 @@
 import { Prisma } from '@prisma/client';
-import { Type } from 'class-transformer';
 
 export class FindPlaceDto {
-  @Type(() => Number)
   skip?: number;
 
-  @Type(() => Number)
   take?: number;
 
   cursor?: Prisma.PlaceWhereUniqueInput;
@@ -15,4 +12,6 @@ export class FindPlaceDto {
   status?: number;
 
   orderBy?: Prisma.PlaceOrderByWithRelationAndSearchRelevanceInput;
+
+  categoryId?: number;
 }

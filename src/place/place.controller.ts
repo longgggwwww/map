@@ -13,6 +13,7 @@ import {
   Request,
   UploadedFiles,
   UseInterceptors,
+  Version,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -78,6 +79,31 @@ export class PlaceController {
     const places = await this.placeService.findAll({});
     console.log(places);
     return await this.placeService.create(createPlaceDto, req.user.userId);
+  }
+
+  @Version('2')
+  @Public()
+  @Get()
+  findAllV2(@Query() findPlaceDto: FindPlaceDto) {
+    if (findPlaceDto.categoryId) {
+      findPlaceDto = {
+        ...findPlaceDto,
+        categoryId: +findPlaceDto.categoryId,
+      };
+    }
+    const status: number = +findPlaceDto.status ?? -1;
+    if (status > -1) {
+      const { where, ...rest } = findPlaceDto;
+      const dto = {
+        ...rest,
+        where: {
+          status,
+        },
+      };
+      return this.placeService.findAllV2(dto);
+    } else {
+      return this.placeService.findAllV2(findPlaceDto);
+    }
   }
 
   @Public()

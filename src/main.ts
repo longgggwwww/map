@@ -1,4 +1,4 @@
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { static as static_ } from 'express';
@@ -22,8 +22,18 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.use('/uploads', static_('uploads'));
   app.enableCors();
+  app.enableVersioning({
+    type: VersioningType.HEADER,
+    header: 'version',
+  });
   const { httpAdapter } = app.get(HttpAdapterHost);
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transformOptions: {
+        enableImplicitConversion: true,
+      },
+    }),
+  );
   app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
   await app.listen(app.get(ConfigService).get<number>('PORT', 3000));
 }
