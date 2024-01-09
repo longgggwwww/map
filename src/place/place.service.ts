@@ -233,6 +233,8 @@ export class PlaceService {
     },
   ) {
     const { skip, take, cursor, orderBy } = params;
+    console.log('debug:', take);
+
     return this.prisma.place.findMany({
       where: {
         OR: [
@@ -254,7 +256,7 @@ export class PlaceService {
         status: 0,
       },
       skip: skip ? +skip : undefined,
-      take: take ? +take : undefined,
+      take: take ? +parseInt(take.toString()) : undefined,
       cursor,
       orderBy,
       include: {

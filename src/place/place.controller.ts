@@ -7,6 +7,7 @@ import {
   MaxFileSizeValidator,
   Param,
   ParseFilePipe,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
@@ -135,7 +136,7 @@ export class PlaceController {
 
   @Public()
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.placeService.findUniq({ id: +id });
   }
 
