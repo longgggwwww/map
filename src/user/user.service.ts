@@ -17,20 +17,20 @@ export class UserService {
             permissions: true,
           },
         },
-        myPlaces: {
-          include: {
-            category: true,
-            ward: {
-              include: {
-                district: {
-                  include: {
-                    province: true,
-                  },
-                },
-              },
-            },
-          },
-        },
+        // myPlaces: {
+        //   include: {
+        //     category: true,
+        //     ward: {
+        //       include: {
+        //         district: {
+        //           include: {
+        //             province: true,
+        //           },
+        //         },
+        //       },
+        //     },
+        //   },
+        // },
         createdCategories: true,
         reviews: true,
         personal: {
@@ -73,20 +73,20 @@ export class UserService {
             permissions: true,
           },
         },
-        myPlaces: {
-          include: {
-            category: true,
-            ward: {
-              include: {
-                district: {
-                  include: {
-                    province: true,
-                  },
-                },
-              },
-            },
-          },
-        },
+        // myPlaces: {
+        //   include: {
+        //     category: true,
+        //     ward: {
+        //       include: {
+        //         district: {
+        //           include: {
+        //             province: true,
+        //           },
+        //         },
+        //       },
+        //     },
+        //   },
+        // },
         createdCategories: true,
         reviews: true,
         personal: {
@@ -118,20 +118,20 @@ export class UserService {
             permissions: true,
           },
         },
-        myPlaces: {
-          include: {
-            category: true,
-            ward: {
-              include: {
-                district: {
-                  include: {
-                    province: true,
-                  },
-                },
-              },
-            },
-          },
-        },
+        // myPlaces: {
+        //   include: {
+        //     category: true,
+        //     ward: {
+        //       include: {
+        //         district: {
+        //           include: {
+        //             province: true,
+        //           },
+        //         },
+        //       },
+        //     },
+        //   },
+        // },
         createdCategories: true,
         reviews: true,
         personal: {
@@ -154,6 +154,33 @@ export class UserService {
     });
   }
 
+  async myPlaces(userId: number, status: number) {
+    const user = await this.prisma.user.findUniqueOrThrow({
+      where: {
+        id: userId,
+      },
+      include: {
+        myPlaces: {
+          where: {
+            status: status ? parseInt(status.toString()) : undefined,
+          },
+          include: {
+            category: true,
+            ward: {
+              include: {
+                district: {
+                  include: {
+                    province: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    return user.myPlaces;
+  }
   async update(params: {
     where: Prisma.UserWhereUniqueInput;
     data: Prisma.UserUpdateInput;
@@ -169,20 +196,20 @@ export class UserService {
             permissions: true,
           },
         },
-        myPlaces: {
-          include: {
-            category: true,
-            ward: {
-              include: {
-                district: {
-                  include: {
-                    province: true,
-                  },
-                },
-              },
-            },
-          },
-        },
+        // myPlaces: {
+        //   include: {
+        //     category: true,
+        //     ward: {
+        //       include: {
+        //         district: {
+        //           include: {
+        //             province: true,
+        //           },
+        //         },
+        //       },
+        //     },
+        //   },
+        // },
         createdCategories: true,
         reviews: true,
         personal: {
@@ -220,20 +247,20 @@ export class UserService {
             permissions: true,
           },
         },
-        myPlaces: {
-          include: {
-            category: true,
-            ward: {
-              include: {
-                district: {
-                  include: {
-                    province: true,
-                  },
-                },
-              },
-            },
-          },
-        },
+        // myPlaces: {
+        //   include: {
+        //     category: true,
+        //     ward: {
+        //       include: {
+        //         district: {
+        //           include: {
+        //             province: true,
+        //           },
+        //         },
+        //       },
+        //     },
+        //   },
+        // },
         createdCategories: true,
         reviews: true,
         personal: {
@@ -294,20 +321,20 @@ export class UserService {
             permissions: true,
           },
         },
-        myPlaces: {
-          include: {
-            category: true,
-            ward: {
-              include: {
-                district: {
-                  include: {
-                    province: true,
-                  },
-                },
-              },
-            },
-          },
-        },
+        // myPlaces: {
+        //   include: {
+        //     category: true,
+        //     ward: {
+        //       include: {
+        //         district: {
+        //           include: {
+        //             province: true,
+        //           },
+        //         },
+        //       },
+        //     },
+        //   },
+        // },
         createdCategories: true,
         reviews: true,
         personal: {

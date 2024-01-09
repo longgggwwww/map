@@ -85,6 +85,11 @@ export class UserController {
     return this.userService.findAll(findUserDto);
   }
 
+  @Get('me/my-places')
+  myPlaces(@Request() req, @Query() { status }: { status: number }) {
+    return this.userService.myPlaces(+req.user.userId, status);
+  }
+
   @Get('me')
   currentUser(@Request() req) {
     return this.userService.findUniq({ id: +req.user.userId });
