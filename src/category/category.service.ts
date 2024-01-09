@@ -33,7 +33,7 @@ export class CategoryService {
       orderBy,
       include: {
         createdBy: true,
-        places: true,
+        // places: true,
         subCategory: true,
       },
     });
