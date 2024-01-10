@@ -43,10 +43,11 @@ export class PlaceController {
       storage: diskStorage({
         destination: 'uploads',
         filename(_req, file, callback) {
-          callback(
-            null,
-            Buffer.from(file.originalname, 'latin1').toString('utf8'),
-          );
+          const parts = file.originalname.split('.');
+          const _file = `${file.filename}-${Date.now()}.${
+            parts[parts.length - 1]
+          }`;
+          callback(null, Buffer.from(_file, 'latin1').toString('utf8'));
         },
       }),
     }),
