@@ -4,6 +4,7 @@ import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { static as static_ } from 'express';
 import { PrismaClientExceptionFilter } from 'nestjs-prisma';
 import { AppModule } from './app.module';
+import { TrimPipe } from './trim.pipe';
 
 /**
  * Fix BigInt Prisma Error
@@ -33,6 +34,7 @@ async function bootstrap() {
         enableImplicitConversion: true,
       },
     }),
+    new TrimPipe(),
   );
   app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
   await app.listen(app.get(ConfigService).get<number>('PORT', 3000));
