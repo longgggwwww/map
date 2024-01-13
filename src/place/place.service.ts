@@ -130,7 +130,11 @@ export class PlaceService {
         },
         reviews: {
           include: {
-            user: true,
+            user: {
+              include: {
+                personal: true,
+              },
+            },
           },
         },
         ward: {

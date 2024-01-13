@@ -11,7 +11,11 @@ export class ReviewService {
       data,
       include: {
         place: true,
-        user: true,
+        user: {
+          include: {
+            personal: true,
+          },
+        },
       },
     });
   }
@@ -32,7 +36,11 @@ export class ReviewService {
       orderBy,
       include: {
         place: true,
-        user: true,
+        user: {
+          include: {
+            personal: true,
+          },
+        },
       },
     });
   }
@@ -42,7 +50,11 @@ export class ReviewService {
       where,
       include: {
         place: true,
-        user: true,
+        user: {
+          include: {
+            personal: true,
+          },
+        },
       },
     });
   }
@@ -57,7 +69,11 @@ export class ReviewService {
       where,
       include: {
         place: true,
-        user: true,
+        user: {
+          include: {
+            personal: true,
+          },
+        },
       },
     });
   }
@@ -73,7 +89,29 @@ export class ReviewService {
       where,
       include: {
         place: true,
-        user: true,
+        user: {
+          include: {
+            personal: true,
+          },
+        },
+      },
+    });
+  }
+
+  async findByPlace(id: number) {
+    return this.prisma.review.findMany({
+      where: {
+        placeId: id,
+      },
+      orderBy: {
+        id: 'desc',
+      },
+      include: {
+        user: {
+          include: {
+            personal: true,
+          },
+        },
       },
     });
   }
