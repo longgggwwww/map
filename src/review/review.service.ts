@@ -20,6 +20,15 @@ export class ReviewService {
     });
   }
 
+  async check(placeId: number, userId: number) {
+    return this.prisma.review.findFirst({
+      where: {
+        placeId,
+        userId,
+      },
+    });
+  }
+
   async findAll(params: {
     skip?: number;
     take?: number;
@@ -35,7 +44,11 @@ export class ReviewService {
       where,
       orderBy,
       include: {
-        place: true,
+        place: {
+          include: {
+            category: true,
+          },
+        },
         user: {
           include: {
             personal: true,

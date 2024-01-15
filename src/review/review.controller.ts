@@ -29,7 +29,10 @@ import { ReviewService } from './review.service';
 @UseInterceptors(new LoggingInterceptor(new PrismaService()))
 @Controller('reviews')
 export class ReviewController {
-  constructor(private readonly reviewService: ReviewService) {}
+  constructor(
+    private readonly reviewService: ReviewService,
+    private prisma: PrismaService,
+  ) {}
 
   @Post('upload/:id')
   @UseInterceptors(
@@ -69,8 +72,8 @@ export class ReviewController {
   }
 
   @Post()
-  create(@Body() createReviewDto: CreateReviewDto, @Request() req) {
-    return this.reviewService.create({
+  async create(@Body() createReviewDto: CreateReviewDto, @Request() req) {
+    return await this.reviewService.create({
       ...createReviewDto,
       user: {
         connect: {
@@ -80,10 +83,24 @@ export class ReviewController {
     });
   }
 
+  @Get('check/:placeId')
+  check(@Request() req, @Param('placeId') placeId: number) {
+    return this.reviewService.check(+placeId, req.user?.userId);
+  }
+
   @Public()
   @Get()
   findAll(@Query() findReviewDto: FindReviewDto) {
     return this.reviewService.findAll(findReviewDto);
+  }
+
+  @Get('me')
+  findByMe(@Request() req) {
+    return this.reviewService.findAll({
+      where: {
+        userId: +req.user?.userId,
+      },
+    });
   }
 
   @Public()

@@ -133,7 +133,7 @@ export class UserService {
         //   },
         // },
         createdCategories: true,
-        reviews: true,
+        // reviews: true,
         personal: {
           include: {
             ward: {

@@ -1,0 +1,23 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=iit
+      - POSTGRES_PASSWORD=anhemiit123
+      - POSTGRES_DB=iit
+    ports:
+      - '5532:5432'
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+  # adminer:
+  #   image: adminer
+  #   container_name: adminer
+  #   restart: always
+  #   ports:
+  #     - 8080:8080
+  #   environment:
+  #     - ADMINER_DESIGN=pokorny
+  #   depends_on:
+  #     - db
