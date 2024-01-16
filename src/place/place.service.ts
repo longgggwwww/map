@@ -237,8 +237,6 @@ export class PlaceService {
     },
   ) {
     const { skip, take, cursor, orderBy } = params;
-    console.log('debug:', take);
-
     return this.prisma.place.findMany({
       where: {
         OR: [

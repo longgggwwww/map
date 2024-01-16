@@ -358,7 +358,6 @@ export class UserService {
   }
 
   async setRole(userIds: number[], roleId: number) {
-    console.log(userIds, roleId);
     for await (const id of userIds) {
       this.prisma.user.update({
         where: {
