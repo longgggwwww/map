@@ -12,25 +12,24 @@ model User {
   id                   Int               @id @default(autoincrement())
   username             String            @unique
   password             String
-  personal             Personal?
   type                 Int               @default(0)
   isActive             Boolean           @default(false)
-  myPlaces             Place[]
-  reviews              Review[]
-  roles                Role[]
-  createdRoles         Role[]            @relation("createdBy")
-  createdPermissions   Permission[]
-  createdCategories    Category[]
-  createdGroups        PermissionGroup[]
   createdAt            DateTime          @default(now())
   updatedAt            DateTime          @updatedAt
+  createdCategories    Category[]
   log                  Log[]
+  createdPermissions   Permission[]
+  createdGroups        PermissionGroup[]
+  personal             Personal?
+  myPlaces             Place[]
+  reviews              Review[]
+  createdRoles         Role[]            @relation("createdBy")
   createdsubCategories SubCategory[]
+  roles                Role[]            @relation("RoleToUser")
 }
 
 model Personal {
   id         Int       @id @default(autoincrement())
-  user       User      @relation(fields: [userId], references: [id])
   userId     Int       @unique
   email      String?   @unique
   phone      String?   @unique
@@ -39,47 +38,48 @@ model Personal {
   gender     Boolean?
   address    String?
   image      String?
-  position   Position? @relation(fields: [positionId], references: [id])
   positionId Int?
-  ward       Ward?     @relation(fields: [wardId], references: [id])
   wardId     Int?
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
+  position   Position? @relation(fields: [positionId], references: [id])
+  user       User      @relation(fields: [userId], references: [id])
+  ward       Ward?     @relation(fields: [wardId], references: [id])
 }
 
 model Role {
   id          Int          @id @default(autoincrement())
   name        String
   code        String       @unique
-  permissions Permission[]
-  users       User[]
-  createdBy   User?        @relation(name: "createdBy", fields: [createdById], references: [id])
   createdById Int?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+  createdBy   User?        @relation("createdBy", fields: [createdById], references: [id])
+  permissions Permission[] @relation("PermissionToRole")
+  users       User[]       @relation("RoleToUser")
 }
 
 model PermissionGroup {
   id          Int          @id @default(autoincrement())
   name        String
-  permissions Permission[]
-  createdBy   User?        @relation(fields: [createdById], references: [id])
   createdById Int?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+  permissions Permission[]
+  createdBy   User?        @relation(fields: [createdById], references: [id])
 }
 
 model Permission {
   id          Int             @id @default(autoincrement())
   label       String
   code        String          @unique
-  group       PermissionGroup @relation(fields: [groupId], references: [id])
   groupId     Int
-  roles       Role[]
-  createdBy   User?           @relation(fields: [createdById], references: [id])
   createdById Int?
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
+  createdBy   User?           @relation(fields: [createdById], references: [id])
+  group       PermissionGroup @relation(fields: [groupId], references: [id])
+  roles       Role[]          @relation("PermissionToRole")
 }
 
 model Company {
@@ -88,68 +88,67 @@ model Company {
   email       String       @unique
   phone       String       @unique
   tax         String       @unique
-  departments Department[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+  departments Department[]
 }
 
 model Department {
   id        Int        @id @default(autoincrement())
   name      String
   code      String     @unique
-  company   Company    @relation(fields: [companyId], references: [id])
   companyId Int
-  positions Position[]
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+  company   Company    @relation(fields: [companyId], references: [id])
+  positions Position[]
 }
 
 model Position {
   id           Int        @id @default(autoincrement())
   name         String
   code         String     @unique
-  department   Department @relation(fields: [departmentId], references: [id])
   departmentId Int
-  persons      Personal[]
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
+  persons      Personal[]
+  department   Department @relation(fields: [departmentId], references: [id])
 }
 
 model Province {
   id        Int        @id @default(autoincrement())
   name      String
   code      String     @unique
-  districts District[]
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+  districts District[]
 }
 
 model District {
   id         Int      @id @default(autoincrement())
   name       String
   code       String   @unique
-  province   Province @relation(fields: [provinceId], references: [id])
   provinceId Int
-  wards      Ward[]
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
+  province   Province @relation(fields: [provinceId], references: [id])
+  wards      Ward[]
 }
 
 model Ward {
   id         Int        @id @default(autoincrement())
   name       String
   code       String     @unique
-  district   District   @relation(fields: [districtId], references: [id])
   districtId Int
-  persons    Personal[]
-  places     Place[]
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
+  persons    Personal[]
+  places     Place[]
+  district   District   @relation(fields: [districtId], references: [id])
 }
 
 model Log {
   id        Int      @id @default(autoincrement())
-  user      User     @relation(fields: [userId], references: [id])
   userId    Int
   method    String
   url       String
@@ -158,38 +157,37 @@ model Log {
   ip        String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model SubCategory {
   id          Int        @id @default(autoincrement())
   name        String
-  categories  Category[]
-  createdBy   User?      @relation(fields: [createdById], references: [id])
   createdById Int?
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+  categories  Category[]
+  createdBy   User?      @relation(fields: [createdById], references: [id])
 }
 
 model Category {
   id            Int          @id @default(autoincrement())
   name          String
-  subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id])
   subCategoryId Int?
-  places        Place[]
   color         String?
   icon          String?
-  createdBy     User?        @relation(fields: [createdById], references: [id])
   createdById   Int?
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
+  createdBy     User?        @relation(fields: [createdById], references: [id])
+  subCategory   SubCategory? @relation(fields: [subCategoryId], references: [id])
+  places        Place[]
 }
 
 model Place {
   id          Int       @id @default(autoincrement())
   name        String
-  category    Category? @relation(fields: [categoryId], references: [id])
   categoryId  Int?
-  ward        Ward?     @relation(fields: [wardId], references: [id])
   wardId      Int?
   photos      String[]
   address     String?
@@ -200,18 +198,52 @@ model Place {
   lng         Float
   lat         Float
   status      Int       @default(0)
-  createdBy   User?     @relation(fields: [createdById], references: [id])
   createdById Int?
-  reviews     Review[]
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  category    Category? @relation(fields: [categoryId], references: [id])
+  createdBy   User?     @relation(fields: [createdById], references: [id])
+  ward        Ward?     @relation(fields: [wardId], references: [id])
+  reviews     Review[]
 }
 
 model Review {
   id        Int      @id @default(autoincrement())
-  user      User     @relation(fields: [userId], references: [id])
   userId    Int
+  placeId   Int
+  content   String
+  stars     Int
+  photos    String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   place     Place    @relation(fields: [placeId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model PlaceTmp {
+  id          Int      @id @default(autoincrement())
+  placeId     Int
+  name        String
+  categoryId  Int?
+  wardId      Int?
+  photos      String[]
+  address     String?
+  description String?
+  email       String?
+  phone       String?
+  website     String?
+  lng         Float
+  lat         Float
+  status      Int      @default(0)
+  createdById Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ReviewTmp {
+  id        Int      @id @default(autoincrement())
+  reviewId  Int
+  userId    Int
   placeId   Int
   content   String
   stars     Int
