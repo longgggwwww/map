@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Delete,
-  FileTypeValidator,
   Get,
   MaxFileSizeValidator,
   Param,
@@ -52,9 +51,9 @@ export class UserController {
       new ParseFilePipe({
         validators: [
           new MaxFileSizeValidator({ maxSize: 1000000 }),
-          new FileTypeValidator({
-            fileType: /(jpeg|jpg|png)$/i,
-          }),
+          // new FileTypeValidator({
+          //   fileType: /(jpeg|jpg|png)$/i,
+          // }),
         ],
       }),
     )

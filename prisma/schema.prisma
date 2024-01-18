@@ -207,19 +207,6 @@ model Place {
   reviews     Review[]
 }
 
-model Review {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  placeId   Int
-  content   String
-  stars     Int
-  photos    String[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  place     Place    @relation(fields: [placeId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
-}
-
 model PlaceTmp {
   id          Int      @id @default(autoincrement())
   placeId     Int
@@ -240,14 +227,29 @@ model PlaceTmp {
   updatedAt   DateTime @updatedAt
 }
 
-model ReviewTmp {
+model Review {
   id        Int      @id @default(autoincrement())
-  reviewId  Int
   userId    Int
   placeId   Int
   content   String
   stars     Int
   photos    String[]
+  status    Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  place     Place    @relation(fields: [placeId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model ReviewTmp {
+  id        Int      @id @default(autoincrement())
+  reviewId  Int      @unique
+  userId    Int
+  placeId   Int
+  content   String
+  stars     Int
+  photos    String[]
+  status    Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

@@ -29,7 +29,7 @@ import { CreatePlaceDto } from './dto/create-place.dto';
 import { DeletePlaceDto } from './dto/delete-place.dto';
 import { FindPlaceDto } from './dto/find-place.dto';
 import { ReviewPlaceDto } from './dto/review-place.dto';
-import { UpdatePlaceDto } from './dto/update-place.dto';
+import { UpdatePlaceDto, UpdatePlaceTmpDto } from './dto/update-place.dto';
 import { PlaceService } from './place.service';
 
 @UseInterceptors(new LoggingInterceptor(new PrismaService()))
@@ -74,9 +74,60 @@ export class PlaceController {
     });
   }
 
+  @Post('upload-tmp/:id')
+  @UseInterceptors(
+    FilesInterceptor('photos', 10, {
+      storage: diskStorage({
+        destination: 'uploads/place/tmp',
+        filename(_req, file, callback) {
+          const [head, ext] = file.originalname.split('.');
+          const _file = `${head}-${Date.now()}.${ext}`;
+          callback(null, Buffer.from(_file, 'latin1').toString('utf8'));
+        },
+      }),
+    }),
+  )
+  uploadTmp(
+    @Param('id', ParseIntPipe) id: number,
+    @UploadedFiles(
+      new ParseFilePipe({
+        validators: [
+          new MaxFileSizeValidator({ maxSize: 10000000 }),
+          new FileTypeValidator({
+            fileType: /(jpeg|jpg|png)$/i,
+          }),
+        ],
+      }),
+    )
+    files: Express.Multer.File[],
+  ) {
+    return this.placeService.updateTmpPhotos(
+      id,
+      files.map((file) => file.path),
+    );
+  }
+
+  @Get('/place-tmp/:id')
+  findTmp(@Param('id', ParseIntPipe) id: number) {
+    return this.placeService.getTmp(id);
+  }
+
+  @Patch('review/place-tmp')
+  reviewUpdateTmp(@Body() dto: ReviewPlaceDto) {
+    // return this.placeService.
+  }
+
+  @Patch('place-tmp/:id')
+  addUpdateTmp(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdatePlaceTmpDto,
+  ) {
+    return this.placeService.addPlaceTmp(id, dto);
+  }
+
   @Post()
   async create(@Body() createPlaceDto: CreatePlaceDto, @Request() req) {
-    const places = await this.placeService.findAll({});
+    // const places = await this.placeService.findAll({});
     return await this.placeService.create(createPlaceDto, req.user.userId);
   }
 

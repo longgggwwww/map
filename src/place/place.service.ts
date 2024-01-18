@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
+import { UpdatePlaceTmpDto } from './dto/update-place.dto';
 
 @Injectable()
 export class PlaceService {
@@ -37,6 +38,97 @@ export class PlaceService {
             },
           },
         },
+      },
+    });
+  }
+
+  async addPlaceTmp(
+    id: number,
+    {
+      name,
+      categoryId,
+      email,
+      lat,
+      phone,
+      address,
+      description,
+      lng,
+      status,
+      wardId,
+      website,
+    }: UpdatePlaceTmpDto,
+  ) {
+    return this.prisma.placeTmp.upsert({
+      where: { id },
+      create: {
+        name,
+        categoryId,
+        lat,
+        lng,
+        email,
+        phone,
+        website,
+        address,
+        description,
+        status,
+        wardId,
+        placeId: id,
+      },
+      update: {
+        name,
+        categoryId,
+        lat,
+        lng,
+        email,
+        phone,
+        website,
+        address,
+        description,
+        status,
+        wardId,
+        placeId: id,
+      },
+    });
+  }
+
+  async getTmp(id: number) {
+    const tmp = await this.prisma.placeTmp.findFirst({
+      where: { id },
+    });
+    const [category, ward] = await Promise.all([
+      this.prisma.category.findUnique({
+        where: {
+          id: tmp.categoryId,
+        },
+      }),
+      this.prisma.ward.findUnique({
+        where: {
+          id: tmp.wardId,
+        },
+      }),
+    ]);
+    return {
+      ...tmp,
+      category,
+      ward,
+    };
+  }
+
+  // async reviewPlaceTmp(placeTmpIds: number[], status: number) {
+  //   return this.prisma.placeTmp.updateMany({
+  //     where: {
+  //       id: {
+  //         in
+  //       }
+  //     }
+  //   })
+  // }
+
+  async updateTmpPhotos(id: number, photos: string[]) {
+    return this.prisma.placeTmp.update({
+      where: { id },
+      data: {
+        photos,
       },
     });
   }
