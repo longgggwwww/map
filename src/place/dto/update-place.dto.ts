@@ -14,6 +14,7 @@ export class UpdatePlaceTmpDto {
   lng: number;
   lat: number;
   status?: number;
+  createdById?: number;
   createdAt?: string | Date;
   updatedAt?: string | Date;
   categoryId?: number;

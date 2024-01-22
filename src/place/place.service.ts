@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 import { UpdatePlaceTmpDto } from './dto/update-place.dto';
@@ -56,6 +56,7 @@ export class PlaceService {
       status,
       wardId,
       website,
+      createdById,
     }: UpdatePlaceTmpDto,
   ) {
     return this.prisma.placeTmp.upsert({
@@ -73,6 +74,7 @@ export class PlaceService {
         status,
         wardId,
         placeId: id,
+        createdById,
       },
       update: {
         name,
@@ -86,15 +88,23 @@ export class PlaceService {
         description,
         status,
         wardId,
+        createdById,
         placeId: id,
       },
     });
+  }
+
+  async getPlaceTmpList() {
+    return this.prisma.placeTmp.findMany();
   }
 
   async getTmp(id: number) {
     const tmp = await this.prisma.placeTmp.findFirst({
       where: { id },
     });
+    if (!tmp) {
+      throw new NotFoundException();
+    }
     const [category, ward] = await Promise.all([
       this.prisma.category.findUnique({
         where: {
@@ -114,15 +124,27 @@ export class PlaceService {
     };
   }
 
-  // async reviewPlaceTmp(placeTmpIds: number[], status: number) {
-  //   return this.prisma.placeTmp.updateMany({
-  //     where: {
-  //       id: {
-  //         in
-  //       }
-  //     }
-  //   })
-  // }
+  async findMyPlaceTmp(userId: number) {
+    return this.prisma.placeTmp.findMany({
+      where: {
+        createdById: userId,
+      },
+    });
+  }
+
+  async reviewPlaceTmp(placeTmpIds: number[], status: number) {
+    const placeTmp = await this.prisma.placeTmp.updateMany({
+      where: {
+        id: {
+          in: placeTmpIds,
+        },
+      },
+      data: {
+        status,
+      },
+    });
+    return placeTmp;
+  }
 
   async updateTmpPhotos(id: number, photos: string[]) {
     return this.prisma.placeTmp.update({

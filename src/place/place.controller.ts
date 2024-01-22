@@ -107,22 +107,38 @@ export class PlaceController {
     );
   }
 
-  @Get('/place-tmp/:id')
+  // Lấy danh sách địa điểm cập nhật (dành cho admin)
+  @Permissions(Permission.BrowsePlace)
+  @Get('place-tmp')
+  findPlaceTmpList() {
+    return this.placeService.getPlaceTmpList();
+  }
+
+  @Get('place-tmp/me/list')
+  findMyPlaceTmpList(@Request() req) {
+    return this.placeService.findMyPlaceTmp(req.user?.userId);
+  }
+
+  @Get('place-tmp/:id')
   findTmp(@Param('id', ParseIntPipe) id: number) {
     return this.placeService.getTmp(id);
   }
 
   @Patch('review/place-tmp')
   reviewUpdateTmp(@Body() dto: ReviewPlaceDto) {
-    // return this.placeService.
+    return this.placeService.reviewPlaceTmp(dto.placeIds, dto.status);
   }
 
   @Patch('place-tmp/:id')
   addUpdateTmp(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdatePlaceTmpDto,
+    @Request() req,
   ) {
-    return this.placeService.addPlaceTmp(id, dto);
+    return this.placeService.addPlaceTmp(id, {
+      ...dto,
+      createdById: req.user?.userId,
+    });
   }
 
   @Post()
