@@ -130,6 +130,14 @@ export class PlaceController {
   }
 
   @Patch('place-tmp/:id')
+  updatePlaceTmp(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdatePlaceTmpDto,
+  ) {
+    return this.placeService.updatePlaceTmp(id, dto);
+  }
+
+  @Post('place-tmp/:id')
   addUpdateTmp(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdatePlaceTmpDto,
@@ -143,7 +151,6 @@ export class PlaceController {
 
   @Post()
   async create(@Body() createPlaceDto: CreatePlaceDto, @Request() req) {
-    // const places = await this.placeService.findAll({});
     return await this.placeService.create(createPlaceDto, req.user.userId);
   }
 

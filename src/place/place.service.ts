@@ -7,6 +7,41 @@ import { UpdatePlaceTmpDto } from './dto/update-place.dto';
 export class PlaceService {
   constructor(private readonly prisma: PrismaService) {}
 
+  async updatePlaceTmp(
+    id: number,
+    {
+      name,
+      categoryId,
+      email,
+      lat,
+      phone,
+      address,
+      description,
+      lng,
+      wardId,
+      website,
+      createdById,
+    }: UpdatePlaceTmpDto,
+  ) {
+    return this.prisma.placeTmp.update({
+      where: { id },
+      data: {
+        name,
+        categoryId,
+        email,
+        lat,
+        phone,
+        address,
+        description,
+        lng,
+        status: 1,
+        wardId,
+        website,
+        createdById,
+      },
+    });
+  }
+
   async create(data: Prisma.PlaceCreateInput, userId?: number) {
     return this.prisma.place.create({
       data: {
@@ -95,7 +130,33 @@ export class PlaceService {
   }
 
   async getPlaceTmpList() {
-    return this.prisma.placeTmp.findMany();
+    const tmps = await this.prisma.placeTmp.findMany();
+    const result = await Promise.all(
+      tmps.map(async (tmp) => {
+        const [category, ward] = await Promise.all([
+          tmp.categoryId
+            ? this.prisma.category.findUnique({
+                where: {
+                  id: tmp.categoryId,
+                },
+              })
+            : null,
+          tmp.wardId
+            ? this.prisma.ward.findUnique({
+                where: {
+                  id: tmp.wardId,
+                },
+              })
+            : null,
+        ]);
+        return {
+          ...tmp,
+          category,
+          ward,
+        };
+      }),
+    );
+    return result;
   }
 
   async getTmp(id: number) {

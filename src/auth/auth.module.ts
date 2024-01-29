@@ -17,7 +17,7 @@ import { LocalStrategy } from './local.strategy';
       useFactory(configService: ConfigService) {
         return {
           secret: configService.getOrThrow('ACCESS_TOKEN_SECRET'),
-          signOptions: { expiresIn: '61m' },
+          signOptions: { expiresIn: '10m' },
         };
       },
       inject: [ConfigService],
