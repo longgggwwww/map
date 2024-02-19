@@ -118,22 +118,22 @@ export class UserService {
             permissions: true,
           },
         },
-        // myPlaces: {
-        //   include: {
-        //     category: true,
-        //     ward: {
-        //       include: {
-        //         district: {
-        //           include: {
-        //             province: true,
-        //           },
-        //         },
-        //       },
-        //     },
-        //   },
-        // },
+        myPlaces: {
+          include: {
+            category: true,
+            ward: {
+              include: {
+                district: {
+                  include: {
+                    province: true,
+                  },
+                },
+              },
+            },
+          },
+        },
         createdCategories: true,
-        // reviews: true,
+        reviews: true,
         personal: {
           include: {
             ward: {
@@ -165,7 +165,9 @@ export class UserService {
             status: status ? parseInt(status.toString()) : undefined,
           },
           include: {
+            _count: true,
             category: true,
+            reviews: true,
             ward: {
               include: {
                 district: {

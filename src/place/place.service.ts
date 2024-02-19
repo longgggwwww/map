@@ -133,7 +133,7 @@ export class PlaceService {
     const tmps = await this.prisma.placeTmp.findMany();
     const result = await Promise.all(
       tmps.map(async (tmp) => {
-        const [category, ward] = await Promise.all([
+        const [category, ward, user, place] = await Promise.all([
           tmp.categoryId
             ? this.prisma.category.findUnique({
                 where: {
@@ -146,6 +146,42 @@ export class PlaceService {
                 where: {
                   id: tmp.wardId,
                 },
+                include: {
+                  district: {
+                    include: {
+                      province: true,
+                    },
+                  },
+                },
+              })
+            : null,
+          tmp.createdById
+            ? this.prisma.user.findUnique({
+                where: {
+                  id: tmp.createdById,
+                },
+                include: {
+                  personal: true,
+                },
+              })
+            : null,
+          tmp.placeId
+            ? this.prisma.place.findUnique({
+                where: {
+                  id: tmp.placeId,
+                },
+                include: {
+                  category: true,
+                  ward: {
+                    include: {
+                      district: {
+                        include: {
+                          province: true,
+                        },
+                      },
+                    },
+                  },
+                },
               })
             : null,
         ]);
@@ -153,6 +189,8 @@ export class PlaceService {
           ...tmp,
           category,
           ward,
+          createdBy: user,
+          place,
         };
       }),
     );
@@ -166,7 +204,7 @@ export class PlaceService {
     if (!tmp) {
       throw new NotFoundException();
     }
-    const [category, ward] = await Promise.all([
+    const [category, ward, user] = await Promise.all([
       this.prisma.category.findUnique({
         where: {
           id: tmp.categoryId,
@@ -177,11 +215,20 @@ export class PlaceService {
           id: tmp.wardId,
         },
       }),
+      this.prisma.user.findUnique({
+        where: {
+          id: tmp.createdById,
+        },
+        include: {
+          personal: true,
+        },
+      }),
     ]);
     return {
       ...tmp,
       category,
       ward,
+      createdBy: user,
     };
   }
 
