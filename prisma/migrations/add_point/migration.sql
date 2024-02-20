@@ -1,3 +1,8 @@
+yarn run v1.22.21
+$ /home/dev/iit-projects/map-main/node_modules/.bin/prisma migrate diff --from-empty --to-schema-datamodel prisma/schema.prisma --script
+-- CreateExtension
+CREATE EXTENSION IF NOT EXISTS "postgis";
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
@@ -208,11 +213,33 @@ CREATE TABLE "Review" (
     "content" TEXT NOT NULL,
     "stars" INTEGER NOT NULL,
     "photos" TEXT[],
-    "status" INTEGER,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Review_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "PlaceTmp" (
+    "id" SERIAL NOT NULL,
+    "placeId" INTEGER NOT NULL,
+    "name" TEXT NOT NULL,
+    "categoryId" INTEGER,
+    "wardId" INTEGER,
+    "photos" TEXT[],
+    "address" TEXT,
+    "description" TEXT,
+    "email" TEXT,
+    "phone" TEXT,
+    "website" TEXT,
+    "lng" DOUBLE PRECISION NOT NULL,
+    "lat" DOUBLE PRECISION NOT NULL,
+    "status" INTEGER NOT NULL DEFAULT 0,
+    "createdById" INTEGER,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "PlaceTmp_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -229,6 +256,15 @@ CREATE TABLE "ReviewTmp" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "ReviewTmp_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Point" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "location" geography(Point, 4326) NOT NULL,
+
+    CONSTRAINT "Point_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -287,6 +323,9 @@ CREATE UNIQUE INDEX "Ward_code_key" ON "Ward"("code");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ReviewTmp_reviewId_key" ON "ReviewTmp"("reviewId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Point_name_key" ON "Point"("name");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_RoleToUser_AB_unique" ON "_RoleToUser"("A", "B");
@@ -372,3 +411,4 @@ ALTER TABLE "_PermissionToRole" ADD CONSTRAINT "_PermissionToRole_A_fkey" FOREIG
 -- AddForeignKey
 ALTER TABLE "_PermissionToRole" ADD CONSTRAINT "_PermissionToRole_B_fkey" FOREIGN KEY ("B") REFERENCES "Role"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
+Done in 0.93s.

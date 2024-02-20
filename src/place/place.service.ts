@@ -1,6 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { getDistance } from 'geolib';
 import { PrismaService } from 'nestjs-prisma';
+import { FindWithinRadius } from './dto/find-place.dto';
 import { UpdatePlaceTmpDto } from './dto/update-place.dto';
 
 @Injectable()
@@ -270,9 +272,12 @@ export class PlaceService {
     where?: Prisma.PlaceWhereInput;
     orderBy?: Prisma.PlaceOrderByWithRelationAndSearchRelevanceInput;
     categoryId?: number;
+    lat?: number;
+    lng?: number;
+    radius?: number;
   }) {
     const { skip, take, cursor, where, orderBy, categoryId } = params;
-    return this.prisma.place.findMany({
+    const places = await this.prisma.place.findMany({
       skip,
       take: take ? +take : undefined,
       cursor,
@@ -299,6 +304,32 @@ export class PlaceService {
         },
       },
     });
+    if (params.lat && params.lng && params.radius) {
+      const lat: number = parseFloat(params.lat.toString());
+      const lng: number = parseFloat(params.lng.toString());
+      const radius: number = parseInt(params.radius.toString());
+      const filterdPlaces = places.reduce((a, place) => {
+        const dis = getDistance(
+          {
+            latitude: place.lat,
+            longitude: place.lng,
+          },
+          {
+            latitude: lat,
+            longitude: lng,
+          },
+        );
+        if (dis < radius) {
+          a.push({
+            ...place,
+            distance: dis,
+          });
+        }
+        return a;
+      }, []);
+      return filterdPlaces.sort((a, b) => a.distance - b.distance);
+    }
+    return places;
   }
 
   async findAll(params: {
@@ -506,5 +537,18 @@ export class PlaceService {
         },
       },
     });
+  }
+
+  async findWithinRadius(dto: FindWithinRadius) {
+    const lat: number = parseFloat(dto.lat.toString());
+    const lng: number = parseFloat(dto.lng.toString());
+    const radius: number = parseInt(dto.radius.toString());
+    const places = await this.prisma.place.findMany({
+      where: {
+        status: 0,
+      },
+      take: 5,
+    });
+    return places;
   }
 }

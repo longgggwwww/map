@@ -7,17 +7,17 @@ services:
       - POSTGRES_PASSWORD=anhemiit123
       - POSTGRES_DB=iit
     ports:
-      - '5532:5432'
+      - '5432:5432'
     volumes:
       - ./data:/var/lib/postgresql/data
-
-  # adminer:
-  #   image: adminer
-  #   container_name: adminer
-  #   restart: always
-  #   ports:
-  #     - 8080:8080
-  #   environment:
-  #     - ADMINER_DESIGN=pokorny
-  #   depends_on:
-  #     - db
+  pointdb:
+    container_name: pointdb
+    image: postgis/postgis
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_USER=iit
+      - POSTGRES_PASSWORD=anhemiit123
+      - POSTGRES_DB=iit
+    volumes:
+      - ./pointdata:/var/lib/postgresql/data

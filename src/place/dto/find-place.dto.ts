@@ -15,3 +15,9 @@ export class FindPlaceDto {
 
   categoryId?: number;
 }
+
+export class FindWithinRadius {
+  lat: number;
+  lng: number;
+  radius: number;
+}

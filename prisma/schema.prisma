@@ -1,11 +1,12 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch"]
+  previewFeatures = ["fullTextSearch", "postgresqlExtensions"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider   = "postgresql"
+  url        = env("DATABASE_URL")
+  extensions = [postgis]
 }
 
 model User {
@@ -207,6 +208,19 @@ model Place {
   reviews     Review[]
 }
 
+model Review {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  placeId   Int
+  content   String
+  stars     Int
+  photos    String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  place     Place    @relation(fields: [placeId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
 model PlaceTmp {
   id          Int      @id @default(autoincrement())
   placeId     Int
@@ -227,20 +241,6 @@ model PlaceTmp {
   updatedAt   DateTime @updatedAt
 }
 
-model Review {
-  id        Int      @id @default(autoincrement())
-  userId    Int
-  placeId   Int
-  content   String
-  stars     Int
-  photos    String[]
-  status    Int?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  place     Place    @relation(fields: [placeId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
-}
-
 model ReviewTmp {
   id        Int      @id @default(autoincrement())
   reviewId  Int      @unique
@@ -252,4 +252,10 @@ model ReviewTmp {
   status    Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Point {
+  id       Int                                   @id @default(autoincrement())
+  name     String                                @unique
+  location Unsupported("geography(Point, 4326)")
 }

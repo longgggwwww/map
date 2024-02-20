@@ -27,7 +27,7 @@ import { Roles } from 'src/role/decoratos/role.decorator';
 import { Role } from 'src/role/enums/role.enum';
 import { CreatePlaceDto } from './dto/create-place.dto';
 import { DeletePlaceDto } from './dto/delete-place.dto';
-import { FindPlaceDto } from './dto/find-place.dto';
+import { FindPlaceDto, FindWithinRadius } from './dto/find-place.dto';
 import { ReviewPlaceDto } from './dto/review-place.dto';
 import { UpdatePlaceDto, UpdatePlaceTmpDto } from './dto/update-place.dto';
 import { PlaceService } from './place.service';
@@ -177,6 +177,13 @@ export class PlaceController {
     } else {
       return this.placeService.findAllV2(findPlaceDto);
     }
+  }
+
+  @Version('3')
+  @Public()
+  @Get()
+  findWithinRadius(@Query() dto: FindWithinRadius) {
+    return this.placeService.findWithinRadius(dto);
   }
 
   @Public()
