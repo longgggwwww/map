@@ -126,7 +126,7 @@ export class PlaceController {
 
   @Patch('review/place-tmp')
   reviewUpdateTmp(@Body() dto: ReviewPlaceDto) {
-    return this.placeService.reviewPlaceTmp(dto.placeIds, dto.status);
+    return this.placeService.reviewPlaceTmp(dto.placeTmpIds, dto.status);
   }
 
   @Patch('place-tmp/:id')
@@ -226,7 +226,7 @@ export class PlaceController {
     return this.placeService.review({
       where: {
         id: {
-          in: reviewPlaceDto.placeIds,
+          in: reviewPlaceDto.placeTmpIds,
         },
       },
       status: reviewPlaceDto.status,

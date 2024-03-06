@@ -25,6 +25,7 @@ export class PlaceService {
       createdById,
     }: UpdatePlaceTmpDto,
   ) {
+    console.log('go here', id);
     return this.prisma.placeTmp.update({
       where: { id },
       data: {
@@ -253,6 +254,44 @@ export class PlaceService {
         status,
       },
     });
+    const placeTmps = await this.prisma.placeTmp.findMany({
+      where: {
+        id: {
+          in: placeTmpIds,
+        },
+      },
+    });
+    for (const placeTmp of placeTmps) {
+      await this.prisma.place.update({
+        where: {
+          id: placeTmp.placeId,
+        },
+        data: {
+          name: placeTmp.name,
+          category: placeTmp.categoryId
+            ? {
+                connect: {
+                  id: placeTmp.categoryId,
+                },
+              }
+            : undefined,
+          ward: placeTmp.wardId
+            ? {
+                connect: {
+                  id: placeTmp.wardId,
+                },
+              }
+            : undefined,
+          address: placeTmp.address,
+          description: placeTmp.description,
+          email: placeTmp.email,
+          phone: placeTmp.phone,
+          website: placeTmp.website,
+          lat: placeTmp.lat,
+          lng: placeTmp.lng,
+        },
+      });
+    }
     return placeTmp;
   }
 
