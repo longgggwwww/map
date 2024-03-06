@@ -28,7 +28,7 @@ import { Role } from 'src/role/enums/role.enum';
 import { CreatePlaceDto } from './dto/create-place.dto';
 import { DeletePlaceDto } from './dto/delete-place.dto';
 import { FindPlaceDto, FindWithinRadius } from './dto/find-place.dto';
-import { ReviewPlaceDto } from './dto/review-place.dto';
+import { ReviewPlaceDto, ReviewPlaceTmpDto } from './dto/review-place.dto';
 import { UpdatePlaceDto, UpdatePlaceTmpDto } from './dto/update-place.dto';
 import { PlaceService } from './place.service';
 
@@ -125,7 +125,7 @@ export class PlaceController {
   }
 
   @Patch('review/place-tmp')
-  reviewUpdateTmp(@Body() dto: ReviewPlaceDto) {
+  reviewUpdateTmp(@Body() dto: ReviewPlaceTmpDto) {
     return this.placeService.reviewPlaceTmp(dto.placeTmpIds, dto.status);
   }
 
@@ -223,10 +223,11 @@ export class PlaceController {
   @Roles(Role.Admin)
   @Patch('review')
   review(@Body() reviewPlaceDto: ReviewPlaceDto) {
+    console.log('dakdajdkj', reviewPlaceDto);
     return this.placeService.review({
       where: {
         id: {
-          in: reviewPlaceDto.placeTmpIds,
+          in: reviewPlaceDto.placeIds,
         },
       },
       status: reviewPlaceDto.status,
