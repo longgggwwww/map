@@ -13,6 +13,7 @@ export class ReviewService {
         place: true,
         user: {
           include: {
+            reviews: true,
             personal: true,
           },
         },
@@ -51,6 +52,7 @@ export class ReviewService {
         },
         user: {
           include: {
+            reviews: true,
             personal: true,
           },
         },
@@ -84,6 +86,7 @@ export class ReviewService {
         place: true,
         user: {
           include: {
+            reviews: true,
             personal: true,
           },
         },
@@ -122,6 +125,7 @@ export class ReviewService {
       include: {
         user: {
           include: {
+            reviews: true,
             personal: true,
           },
         },

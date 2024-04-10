@@ -25,7 +25,6 @@ export class PlaceService {
       createdById,
     }: UpdatePlaceTmpDto,
   ) {
-    console.log('go here', id);
     return this.prisma.placeTmp.update({
       where: { id },
       data: {
@@ -341,6 +340,7 @@ export class PlaceService {
             color: true,
           },
         },
+        photos: true,
       },
     });
     if (params.lat && params.lng && params.radius) {
@@ -424,6 +424,7 @@ export class PlaceService {
           include: {
             user: {
               include: {
+                _count: true,
                 personal: true,
               },
             },

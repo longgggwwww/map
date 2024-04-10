@@ -2,11 +2,8 @@ import {
   Body,
   Controller,
   Delete,
-  FileTypeValidator,
   Get,
-  MaxFileSizeValidator,
   Param,
-  ParseFilePipe,
   ParseIntPipe,
   Patch,
   Post,
@@ -40,6 +37,7 @@ export class ReviewController {
       storage: diskStorage({
         destination: 'uploads/reviews',
         filename(_req, file, callback) {
+          console.log('hello world');
           const [head, ext] = file.originalname.split('.');
           const _file = `${head}-${Date.now()}.${ext}`;
           callback(null, Buffer.from(_file, 'latin1').toString('utf8'));
@@ -48,17 +46,8 @@ export class ReviewController {
     }),
   )
   upload(
-    @Param('id') id: string,
-    @UploadedFiles(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 10000000 }),
-          new FileTypeValidator({
-            fileType: /(jpeg|jpg|png)$/i,
-          }),
-        ],
-      }),
-    )
+    @Param('id', ParseIntPipe) id: number,
+    @UploadedFiles()
     files: Express.Multer.File[],
   ) {
     return this.reviewService.update({

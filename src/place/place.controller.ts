@@ -51,17 +51,8 @@ export class PlaceController {
     }),
   )
   upload(
-    @Param('id') id: string,
-    @UploadedFiles(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 10000000 }),
-          new FileTypeValidator({
-            fileType: /(jpeg|jpg|png)$/i,
-          }),
-        ],
-      }),
-    )
+    @Param('id', ParseIntPipe) id: number,
+    @UploadedFiles()
     files: Express.Multer.File[],
   ) {
     return this.placeService.update({

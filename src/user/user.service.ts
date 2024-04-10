@@ -167,7 +167,15 @@ export class UserService {
           include: {
             _count: true,
             category: true,
-            reviews: true,
+            reviews: {
+              include: {
+                user: {
+                  include: {
+                    personal: true,
+                  },
+                },
+              },
+            },
             ward: {
               include: {
                 district: {
