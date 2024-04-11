@@ -37,7 +37,6 @@ export class ReviewController {
       storage: diskStorage({
         destination: 'uploads/reviews',
         filename(_req, file, callback) {
-          console.log('hello world');
           const [head, ext] = file.originalname.split('.');
           const _file = `${head}-${Date.now()}.${ext}`;
           callback(null, Buffer.from(_file, 'latin1').toString('utf8'));
