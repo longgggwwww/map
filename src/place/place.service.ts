@@ -426,6 +426,7 @@ export class PlaceService {
               include: {
                 _count: true,
                 personal: true,
+                reviews: true,
               },
             },
           },
@@ -580,14 +581,12 @@ export class PlaceService {
   }
 
   async findWithinRadius(dto: FindWithinRadius) {
-    const lat: number = parseFloat(dto.lat.toString());
-    const lng: number = parseFloat(dto.lng.toString());
-    const radius: number = parseInt(dto.radius.toString());
     const places = await this.prisma.place.findMany({
       where: {
         status: 0,
       },
       take: 5,
+      include: {},
     });
     return places;
   }

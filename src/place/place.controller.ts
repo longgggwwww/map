@@ -2,9 +2,7 @@ import {
   Body,
   Controller,
   Delete,
-  FileTypeValidator,
   Get,
-  MaxFileSizeValidator,
   Param,
   ParseFilePipe,
   ParseIntPipe,
@@ -82,12 +80,12 @@ export class PlaceController {
     @Param('id', ParseIntPipe) id: number,
     @UploadedFiles(
       new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 10000000 }),
-          new FileTypeValidator({
-            fileType: /(jpeg|jpg|png)$/i,
-          }),
-        ],
+        // validators: [
+        //   new MaxFileSizeValidator({ maxSize: 10000000 }),
+        //   new FileTypeValidator({
+        //     fileType: /(jpeg|jpg|png)$/i,
+        //   }),
+        // ],
       }),
     )
     files: Express.Multer.File[],
