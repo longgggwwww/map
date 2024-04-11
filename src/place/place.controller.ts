@@ -212,7 +212,6 @@ export class PlaceController {
   @Roles(Role.Admin)
   @Patch('review')
   review(@Body() reviewPlaceDto: ReviewPlaceDto) {
-    console.log('dakdajdkj', reviewPlaceDto);
     return this.placeService.review({
       where: {
         id: {

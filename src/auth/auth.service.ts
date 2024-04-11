@@ -71,7 +71,6 @@ export class AuthService {
   }
 
   async refreshToken(token: string) {
-    console.log('call', token);
     // Check storage
     const payload = await this.jwtService.verify(token, {
       secret: this.configService.get('REFRESH_TOKEN_SECRET'),
