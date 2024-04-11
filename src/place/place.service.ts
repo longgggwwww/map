@@ -340,6 +340,7 @@ export class PlaceService {
             color: true,
           },
         },
+        address: true,
         photos: true,
       },
     });
