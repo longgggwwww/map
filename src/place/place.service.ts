@@ -25,7 +25,7 @@ export class PlaceService {
       createdById,
     }: UpdatePlaceTmpDto,
   ) {
-    return this.prisma.placeTmp.update({
+    const tmp = await this.prisma.placeTmp.update({
       where: { id },
       data: {
         name,
@@ -42,6 +42,23 @@ export class PlaceService {
         createdById,
       },
     });
+    const [category, ward] = await Promise.all([
+      this.prisma.category.findUnique({
+        where: {
+          id: tmp.categoryId,
+        },
+      }),
+      this.prisma.ward.findUnique({
+        where: {
+          id: tmp.wardId,
+        },
+      }),
+    ]);
+    return {
+      ...tmp,
+      category,
+      ward,
+    };
   }
 
   async create(data: Prisma.PlaceCreateInput, userId?: number) {
@@ -235,10 +252,47 @@ export class PlaceService {
   }
 
   async findMyPlaceTmp(userId: number) {
-    return this.prisma.placeTmp.findMany({
+    const tmps = await this.prisma.placeTmp.findMany({
       where: {
         createdById: userId,
       },
+    });
+    return tmps.map((tmp) => {
+      // const [category, ward, user] = await Promise.all([
+      //   this.prisma.category.findUnique({
+      //     where: {
+      //       id: tmp.categoryId,
+      //     },
+      //   }),
+      //   this.prisma.ward.findUnique({
+      //     where: {
+      //       id: tmp.wardId,
+      //     },
+      //   }),
+      //   this.prisma.user.findUnique({
+      //     where: {
+      //       id: tmp.createdById,
+      //     },
+      //     include: {
+      //       personal: true,
+      //     },
+      //   }),
+      // ]);
+      // if (!category) {
+      //   return null;
+      // }
+      // if (!ward) {
+      //   return null;
+      // }
+      // if (!user) {
+      //   return null;
+      // }
+      return {
+        ...tmp,
+        // category,
+        // ward,
+        // user,
+      };
     });
   }
 
@@ -295,12 +349,29 @@ export class PlaceService {
   }
 
   async updateTmpPhotos(id: number, photos: string[]) {
-    return this.prisma.placeTmp.update({
+    const tmp = await this.prisma.placeTmp.update({
       where: { id },
       data: {
         photos,
       },
     });
+    const [category, ward] = await Promise.all([
+      this.prisma.category.findUnique({
+        where: {
+          id: tmp.categoryId,
+        },
+      }),
+      this.prisma.ward.findUnique({
+        where: {
+          id: tmp.wardId,
+        },
+      }),
+    ]);
+    return {
+      ...tmp,
+      category,
+      ward,
+    };
   }
 
   async findAllV2(params: {
@@ -342,6 +413,7 @@ export class PlaceService {
         },
         address: true,
         photos: true,
+        reviews: true,
       },
     });
     if (params.lat && params.lng && params.radius) {
