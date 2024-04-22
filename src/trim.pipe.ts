@@ -11,7 +11,7 @@ export class TrimPipe implements PipeTransform {
     return typeof obj === 'object' && obj !== null;
   }
 
-  private trim(values) {
+  private trim(values: any) {
     Object.keys(values).forEach((key) => {
       if (key !== 'password') {
         if (this.isObj(values[key])) {

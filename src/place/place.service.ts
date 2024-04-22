@@ -414,6 +414,15 @@ export class PlaceService {
         address: true,
         photos: true,
         reviews: true,
+        ward: {
+          include: {
+            district: {
+              include: {
+                province: true,
+              },
+            },
+          },
+        },
       },
     });
     if (params.lat && params.lng && params.radius) {
@@ -521,33 +530,39 @@ export class PlaceService {
     where: Prisma.PlaceWhereUniqueInput;
     data: Prisma.PlaceUpdateInput;
   }) {
-    const { where, data } = params;
-    return this.prisma.place.update({
-      data,
-      where,
-      include: {
-        category: true,
-        createdBy: {
-          include: {
-            personal: true,
+    try {
+      const { where, data } = params;
+      console.log('log:', data);
+      const doc = await this.prisma.place.update({
+        data,
+        where,
+        include: {
+          category: true,
+          createdBy: {
+            include: {
+              personal: true,
+            },
           },
-        },
-        reviews: {
-          include: {
-            user: true,
+          reviews: {
+            include: {
+              user: true,
+            },
           },
-        },
-        ward: {
-          include: {
-            district: {
-              include: {
-                province: true,
+          ward: {
+            include: {
+              district: {
+                include: {
+                  province: true,
+                },
               },
             },
           },
         },
-      },
-    });
+      });
+      return doc;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   async removeMany(where: Prisma.PlaceWhereInput) {
