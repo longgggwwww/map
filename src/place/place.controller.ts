@@ -78,14 +78,6 @@ export class PlaceController {
   uploadTmp(
     @Param('id', ParseIntPipe) id: number,
     @UploadedFiles()
-    // new ParseFilePipe({
-    //   validators: [
-    //     new MaxFileSizeValidator({ maxSize: 10000000 }),
-    //     new FileTypeValidator({
-    //       fileType: /(jpeg|jpg|png)$/i,
-    //     }),
-    //   ],
-    // }),
     files: Express.Multer.File[],
   ) {
     return this.placeService.updateTmpPhotos(

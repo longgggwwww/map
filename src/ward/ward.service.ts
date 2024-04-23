@@ -17,11 +17,11 @@ export class WardService {
   }
 
   async findAll(params: {
+    cursor?: Prisma.WardWhereUniqueInput;
+    orderBy?: Prisma.WardOrderByWithRelationAndSearchRelevanceInput;
     skip?: number;
     take?: number;
-    cursor?: Prisma.WardWhereUniqueInput;
     where?: Prisma.WardWhereInput;
-    orderBy?: Prisma.WardOrderByWithRelationAndSearchRelevanceInput;
   }) {
     const { skip, take, cursor, where, orderBy } = params;
     return this.prisma.ward.findMany({
