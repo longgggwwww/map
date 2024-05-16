@@ -409,6 +409,8 @@ export class PlaceService {
             name: true,
             icon: true,
             color: true,
+            subCategory: true,
+            subCategoryId: true,
           },
         },
         email: true,
@@ -472,7 +474,11 @@ export class PlaceService {
       where,
       orderBy,
       include: {
-        category: true,
+        category: {
+          include: {
+            subCategory: true,
+          },
+        },
         createdBy: {
           include: {
             personal: true,
@@ -683,7 +689,13 @@ export class PlaceService {
         status: 0,
       },
       take: 5,
-      include: {},
+      include: {
+        category: {
+          include: {
+            subCategory: true,
+          },
+        },
+      },
     });
     return places;
   }
