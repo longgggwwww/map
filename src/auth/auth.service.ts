@@ -17,7 +17,7 @@ export class AuthService {
   ) {}
 
   async validateUser(username: string, password: string) {
-    const user = await this.userService.findUniq({ username });
+    const user = await this.userService.findUniq({ username, isActive: true });
     if (!user) {
       return null;
     }
@@ -63,6 +63,7 @@ export class AuthService {
     const user = await this.userService.create({
       username: signUpDto.username,
       password: hash,
+      isActive: true,
       personal: {
         create: {},
       },
